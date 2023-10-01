@@ -1,0 +1,41 @@
+project:
+  type: website
+
+website:
+  title: "DSAN 5000 Portfolio Project"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: about.ipynb
+        text: About Me
+      - href: https://github.com/anly501/dsan-5000-project-geh1221
+        text: Code
+      - href: https://github.com/anly501/dsan-5000-project-geh1221
+        text: Data
+      - href: introduction.ipynb
+        text: Introduction
+      - href: data-gathering.ipynb
+        text: Data Gathering
+      - href: data-cleaning.ipynb
+        text: Data Cleaning
+      - href: data-exploration.ipynb
+        text: Data Exploration
+      - href: Clustering.ipynb
+        text: Clustering
+      - href: dimensionality-reduction.ipynb
+        text: Dimensionality Reduction
+      - href: decision-trees.ipynb
+        text: Decision Trees
+      - href: arm.ipynb
+        text: ARM
+      - href: conclusions.ipynb
+        text: Conclusions
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+
+
+
