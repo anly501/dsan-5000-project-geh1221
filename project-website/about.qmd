@@ -1,0 +1,9 @@
+---
+title: About
+jupyter: python3
+---
+
+Grace Hyland is a student at Georgetown University. She is currently working on a B.S. in Biology of Global Health and taking classes towards an M.S. in Data Science and Analytics through the accelerated BS/MS program.
+
+![headshot]("/images/headshot.JPG")
+
