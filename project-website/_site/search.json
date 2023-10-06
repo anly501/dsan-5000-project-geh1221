@@ -4,13 +4,20 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "About this site"
+    "text": "Grace Hyland is a student at Georgetown University. She is currently working on a B.S. in Biology of Global Health and taking classes towards an M.S. in Data Science and Analytics through the accelerated BS/MS program.\n\n\n\nheadshot"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "project-website",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+    "text": "Grace Hyland is a student at Georgetown University. She is currently working on a B.S. in Biology of Global Health and taking classes towards an M.S. in Data Science and Analytics through the accelerated BS/MS program.\n\n\n\nheadshot"
+  },
+  {
+    "objectID": "introduction.html",
+    "href": "introduction.html",
+    "title": "DSAN 5000 Portfolio Project",
+    "section": "",
+    "text": "In recent decades, the time and attention put into understanding sports using data and modeling has greatly increased for all sports. The earliest adopting sport was baseball and some close followers have been American football and basketball. The sport of ice hockey took longer to adopt the practice relative to the others. One of the proposed reasons for this is that there are specific challenges that come with trying to collect and analyze data from hockey.\nThese challenges include the infrequency of scoring events, the continuity of game play, and frequent substitutions. Ice hockey is one of the lowest scoring sports, especially compared to the likes of football and basketball. It is not uncommon for games to have fewer than two or three total goals scored. Given this, it can be hard to quantify the impact of each player on the success of their team and the impact that an individual play can have on a game’s outcome without creating more advanced statistical evaluation tools. It is as a result of this fact that the game of hockey is rather continuous compared to the discrete nature of sports such as football and baseball. Without a high number of scoring events, play is much less frequently halted so it is more difficult to classify events as individual plays. Additionally, the lack of stoppages in play mean that players are substituted in the middle of plays and events. This in combination with the very short length of shifts (typically under a minute) contribute to the difficulty of isolating the impact of players on the results of the game.\nNonetheless, steps have been taken over the past two decades to improve the state of hockey analytics. At the beginning of the sport, the goals and assists by players were recorded by officials and coaches and for a long time that was the only data collected on the game. The earliest attempt at an advanced statistic in hockey was plus-minus. Plus-minus is calculated for each player by adding the goals scored for the team while the player is on the ice and subtracting the goals scored against the team while the player is on the ice. Plus-minus runs into the same issue as many statistics in hockey where it is difficult to separate individual players’ contributions and strengths from the overall strength of their team and their line because players are usually on the ice with the same people at the same time.\nAround the mid 2000s, people began to look beyond goals scored and allowed as the only data points that can be used to evaluate players. Some of the other factors considered are shots taken, penalty differential, quality of opponents, and the usage of players based on the zone location of the puck when they are deployed. One of the early popular evaluation metrics was Corsi. Corsi is calculated by taking the sum of shots on goal, missed shots, and blocked shots. In following years Corsi was modified to different iterations that account for some of the problems with the original metric such as Corsi relative (compares individual player to the rest of their team), Corsi close (only considers situations where the game is within one goal), and score adjusted Corsi (places shot attempts in the context of expectations based on the current score.) The major problem that remained after these adjustments is that the metric still doesn’t account for the quality of the shots taken."
   }
 ]
