@@ -6,14 +6,12 @@ website:
   navbar:
     left:
       - href: index.qmd
-        text: Home
-      - href: about.qmd
         text: About Me
       - href: https://github.com/anly501/dsan-5000-project-geh1221
         text: Code
       - href: https://github.com/anly501/dsan-5000-project-geh1221
         text: Data
-      - href: introduction.html
+      - href: introduction.ipynb
         text: Introduction
       - href: data-gathering.ipynb
         text: Data Gathering
