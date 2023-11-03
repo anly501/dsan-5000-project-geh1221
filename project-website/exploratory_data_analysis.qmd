@@ -1,0 +1,173 @@
+---
+title: "Exploratory Data Analysis"
+author: "Grace Hyland"
+format: html
+editor: visual
+---
+
+## Summary Statistics
+
+```{r}
+library(tidyverse)
+regular_data <- read.csv("../data/01-modified-data/skaters_clean.csv")
+pp_data <- read.csv("../data/01-modified-data/skaters_pp.csv")
+pk_data <- read.csv("../data/01-modified-data/skaters_pk.csv")
+```
+
+```{r}
+summary_data_regular <- regular_data %>%
+  subset(select=c(expectedGoals,corsi,shotAttempts,points,goals,faceoffsWon,takeways,giveaways,hits)) %>%
+  summary()
+summary_data_regular
+```
+
+```{r}
+summary(pp_data$icetime)
+
+#remove bottom 25% of players by ice time
+pp_data <- pp_data %>%
+  filter(icetime > 414)
+
+#summarize all metrics
+summary_data_pp <- pp_data %>%
+  subset(select=c(expectedGoals,corsi,shotAttempts,points,goals,faceoffsWon,takeways,giveaways,hits)) %>%
+  summary()
+summary_data_pp
+```
+
+```{r}
+summary(pk_data$icetime)
+
+#remove bottom 25% of players by ice time
+pk_data <- pk_data %>%
+  filter(icetime > 555)
+
+#summarize all metrics
+summary_data_pk <- pk_data %>%
+  subset(select=c(expectedGoals,corsi,shotAttempts,points,goals,faceoffsWon,takeways,giveaways,hits)) %>%
+  summary()
+summary_data_pk
+```
+
+## Normalization of Data
+
+```{r}
+
+norm_regular_data<-mutate(regular_data, expectedGoals=expectedGoals/mean(expectedGoals), corsi=corsi/mean(corsi), shotAttempts=shotAttempts/mean(shotAttempts), points=points/mean(points), goals=goals/mean(goals), faceoffsWon=faceoffsWon/mean(faceoffsWon),takeways=takeways/mean(takeways),giveaways=giveaways/mean(giveaways),hits=hits/mean(hits))
+
+norm_pp_data<-mutate(pp_data, expectedGoals=expectedGoals/mean(expectedGoals), corsi=corsi/mean(corsi), shotAttempts=shotAttempts/mean(shotAttempts), points=points/mean(points), goals=goals/mean(goals), faceoffsWon=faceoffsWon/mean(faceoffsWon),takeways=takeways/mean(takeways),giveaways=giveaways/mean(giveaways),hits=hits/mean(hits))
+ 
+norm_pk_data<-mutate(pk_data, expectedGoals=expectedGoals/mean(expectedGoals), corsi=corsi/mean(corsi), shotAttempts=shotAttempts/mean(shotAttempts), points=points/mean(points), goals=goals/mean(goals), faceoffsWon=faceoffsWon/mean(faceoffsWon),takeways=takeways/mean(takeways),giveaways=giveaways/mean(giveaways),hits=hits/mean(hits))
+```
+
+## Check for Outliers
+
+```{r}
+norm_regular_data<-norm_regular_data %>%
+  subset(select=c(ID, name, team, expectedGoals,corsi,shotAttempts,points,goals,faceoffsWon,takeways,giveaways,hits))
+sapply(norm_regular_data, function(x) sum(x > 3)) #faceoffs won has a lot of outliers
+
+```
+
+```{r}
+norm_pp_data<-norm_pp_data %>%
+  subset(select=c(ID, name, team, expectedGoals,corsi,shotAttempts,points,goals,faceoffsWon,takeways,giveaways,hits))
+sapply(norm_pp_data, function(x) sum(x > 3))  #most metrics have larger number of outliers for powerplays than regular play
+
+```
+
+```{r}
+norm_pk_data<-norm_pk_data %>%
+  subset(select=c(ID, name, team, expectedGoals,corsi,shotAttempts,points,goals,faceoffsWon,takeways,giveaways,hits))
+sapply(norm_pk_data, function(x) sum(x > 3))  #most metrics have larger number of outliers for penalty kills than regular play
+```
+
+## Compare Regular Play and Powerplays
+
+```{r}
+#join pp data with regular data
+colnames(norm_pp_data) <- c("ID","name","team","expectedGoals_pp","corsi_pp","shotAttempts_pp","points_pp","goals_pp","faceoffsWon_pp","takeaways_pp","giveaways_pp","hits_pp")
+df.1 <- left_join(norm_pp_data, norm_regular_data, by="ID")
+```
+
+```{r}
+#compare metric values between regular play and powerplays for all players
+
+library(ggplot2)
+
+ggplot(data=df.1) + geom_point(aes(x=expectedGoals, y=expectedGoals_pp))
+
+ggplot(data=df.1) + geom_point(aes(x=corsi, y=corsi_pp))
+
+ggplot(data=df.1) + geom_point(aes(x=shotAttempts, y= shotAttempts_pp))
+
+ggplot(data=df.1) + geom_point(aes(x=points, y=points_pp))
+
+ggplot(data=df.1) + geom_point(aes(x=goals, y=goals_pp))
+
+ggplot(data=df.1) + geom_point(aes(x=faceoffsWon, y=faceoffsWon_pp))
+
+ggplot(data=df.1) + geom_point(aes(x=takeways, y=takeaways_pp))
+
+ggplot(data=df.1) + geom_point(aes(x=giveaways, y=giveaways_pp))
+
+ggplot(data=df.1) + geom_point(aes(x=hits, y=hits_pp))
+```
+
+## Compare Regular Play and Penalty Kills
+
+```{r}
+#join pk data with regular data
+colnames(norm_pk_data) <- c("ID","name","team","expectedGoals_pk","corsi_pk","shotAttempts_pk","points_pk","goals_pk","faceoffsWon_pk","takeaways_pk","giveaways_pk","hits_pk")
+df.2 <- left_join(norm_pk_data, norm_regular_data, by="ID")
+```
+
+```{r}
+#compare metric values between regular play and penalty kills for all players
+
+library(ggplot2)
+
+ggplot(data=df.2) + geom_point(aes(x=expectedGoals, y=expectedGoals_pk))
+
+ggplot(data=df.2) + geom_point(aes(x=corsi, y=corsi_pk))
+
+ggplot(data=df.2) + geom_point(aes(x=shotAttempts, y= shotAttempts_pk))
+
+ggplot(data=df.2) + geom_point(aes(x=points, y=points_pk))
+
+ggplot(data=df.2) + geom_point(aes(x=goals, y=goals_pk))
+
+ggplot(data=df.2) + geom_point(aes(x=faceoffsWon, y=faceoffsWon_pk))
+
+ggplot(data=df.2) + geom_point(aes(x=takeways, y=takeaways_pk))
+
+ggplot(data=df.2) + geom_point(aes(x=giveaways, y=giveaways_pk))
+
+ggplot(data=df.2) + geom_point(aes(x=hits, y=hits_pk))
+```
+
+## Compare Powerplay and Penalty Kill Success to Team Record
+
+-   Find powerplay and penalty kill success rates for all teams in 2022 season
+
+-   Find data with points record for all teams in 2022 season
+
+-   Add variable for each team that indicates whether they made the playoffs
+
+-   Find correlation between pp and pk success and team record
+
+```{r}
+#load team data and team record data
+team_data <- read.csv("../data/01-modified-data/team_record_clean.csv")
+
+```
+
+```{r}
+#compare powerplay success to overall season success
+ggplot(data=team_data) + geom_point(aes(x=ppPercent, y=points))
+ggplot(data=team_data) + geom_point(aes(x=ppGoals, y=points))
+
+#compare penalty kill success to overall season success
+ggplot(data=team_data) + geom_point(aes(x=pkPercent, y=points))
+ggplot(data=team_data) + geom_point(aes(x=pkGoalsAgainst, y=points))
+```

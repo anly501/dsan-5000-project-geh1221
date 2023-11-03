@@ -17,8 +17,10 @@ website:
         text: Data Gathering
       - href: data-cleaning.ipynb
         text: Data Cleaning
-      - href: data-exploration.ipynb
+      - href: exploratory_data_analysis.qmd
         text: Data Exploration
+      - href: naive_bayes.ipynb
+        text: Naive Bayes
       - href: Clustering.ipynb
         text: Clustering
       - href: dimensionality-reduction.ipynb
