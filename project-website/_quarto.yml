@@ -21,9 +21,9 @@ website:
         text: Data Exploration
       - href: naive_bayes.ipynb
         text: Naive Bayes
-      - href: Clustering.ipynb
+      - href: Clustering.html
         text: Clustering
-      - href: dimensionality-reduction.ipynb
+      - href: dimensionality-reduction.html
         text: Dimensionality Reduction
       - href: decision-trees.ipynb
         text: Decision Trees
