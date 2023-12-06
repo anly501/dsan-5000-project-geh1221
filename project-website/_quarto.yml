@@ -5,29 +5,29 @@ website:
   title: "An Analysis of Power Plays in the NHL"
   navbar:
     left:
-      - href: index.qmd
+      - href: about.html
         text: About Me
       - href: https://github.com/anly501/dsan-5000-project-geh1221
         text: Code
       - href: https://github.com/anly501/dsan-5000-project-geh1221
         text: Data
-      - href: introduction.ipynb
+      - href: introduction.html
         text: Introduction
-      - href: data-gathering.ipynb
+      - href: data-gathering.html
         text: Data Gathering
       - href: data-cleaning.html
         text: Data Cleaning
-      - href: exploratory_data_analysis.qmd
+      - href: exploratory_data_analysis.html
         text: Data Exploration
       - href: naive_bayes.html
         text: Naive Bayes
-      - href: Clustering.html
-        text: Clustering
       - href: dimensionality-reduction.html
         text: Dimensionality Reduction
+      - href: Clustering.html
+        text: Clustering
       - href: decision-trees.html
         text: Decision Trees
-      - href: conclusions.ipynb
+      - href: conclusions.html
         text: Conclusions
 
 format:

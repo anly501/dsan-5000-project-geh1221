@@ -8,7 +8,7 @@
 
 <meta name="author" content="Grace Hyland">
 
-<title>DSAN 5000 Portfolio Project - Introduction to Naive Bayes</title>
+<title>An Analysis of Power Plays in the NHL - Introduction to Naive Bayes</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -106,7 +106,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">DSAN 5000 Portfolio Project</span>
+    <span class="navbar-title">An Analysis of Power Plays in the NHL</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -116,7 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html" rel="" target="">
+    <a class="nav-link" href="./about.html" rel="" target="">
  <span class="menu-text">About Me</span></a>
   </li>  
   <li class="nav-item">
@@ -148,19 +148,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Naive Bayes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./Clustering.html" rel="" target="">
- <span class="menu-text">Clustering</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link" href="./dimensionality-reduction.html" rel="" target="">
  <span class="menu-text">Dimensionality Reduction</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Clustering.html" rel="" target="">
+ <span class="menu-text">Clustering</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./decision-trees.html" rel="" target="">
  <span class="menu-text">Decision Trees</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./conclusions.ipynb" rel="" target="">
+    <a class="nav-link" href="./conclusions.html" rel="" target="">
  <span class="menu-text">Conclusions</span></a>
   </li>  
 </ul>
@@ -192,6 +192,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#feature-selection-1" id="toc-feature-selection-1" class="nav-link" data-scroll-target="#feature-selection-1">Feature Selection</a></li>
   <li><a href="#naive-bayes-after-feature-selection" id="toc-naive-bayes-after-feature-selection" class="nav-link" data-scroll-target="#naive-bayes-after-feature-selection">Naive Bayes After Feature Selection</a></li>
   </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
     </div>
@@ -307,7 +308,7 @@ F1 score: 0.809839283523494
 Precision: 0.875</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="4">
-<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x13fdfbc70&gt;</code></pre>
+<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x7fdf69563220&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="naive_bayes_files/figure-html/cell-5-output-3.png" width="603" height="434"></p>
@@ -449,7 +450,7 @@ F1 score: 0.7287014061207611
 Precision: 0.75</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="9">
-<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x13feb0160&gt;</code></pre>
+<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x7fdf7a847ac0&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="naive_bayes_files/figure-html/cell-10-output-3.png" width="603" height="434"></p>
@@ -512,7 +513,7 @@ F1 score: 0.7287749287749288
 Precision: 0.625</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="11">
-<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x168036ac0&gt;</code></pre>
+<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x7fdf893d7010&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="naive_bayes_files/figure-html/cell-12-output-3.png" width="603" height="434"></p>
@@ -616,16 +617,20 @@ F1 score: 0.7692307692307693
 Precision: 0.625</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="14">
-<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x13ff298e0&gt;</code></pre>
+<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x7fdf78bc8f70&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="naive_bayes_files/figure-html/cell-15-output-3.png" width="603" height="434"></p>
 </div>
 </div>
 <p>The regular play model with feature selection has slightly higher accuracy and f1 scores than the power play model with feature selection, but not higher than the power play model with all features used. Howevery, the precision score is quite a bit lower than both power play data models. This model seems to be good at classifying non-playoff teams, but has a lower success rate with identifying teams that do qualify for the playoffs.</p>
-
-
 </section>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>DSAN 5000 Lecture Content (Hickman 2023)</p>
+
+
 </section>
 
 </main> <!-- /main -->

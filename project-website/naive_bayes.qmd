@@ -356,3 +356,7 @@ disp.plot()
 ```
 
 The regular play model with feature selection has slightly higher accuracy and f1 scores than the power play model with feature selection, but not higher than the power play model with all features used. Howevery, the precision score is quite a bit lower than both power play data models. This model seems to be good at classifying non-playoff teams, but has a lower success rate with identifying teams that do qualify for the playoffs.
+
+## References
+
+DSAN 5000 Lecture Content (Hickman 2023)

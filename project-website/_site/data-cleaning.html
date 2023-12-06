@@ -8,7 +8,7 @@
 
 <meta name="author" content="Grace Hyland">
 
-<title>DSAN 5000 Portfolio Project - Data Cleaning</title>
+<title>An Analysis of Power Plays in the NHL - Data Cleaning</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -106,7 +106,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">DSAN 5000 Portfolio Project</span>
+    <span class="navbar-title">An Analysis of Power Plays in the NHL</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -116,7 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html" rel="" target="">
+    <a class="nav-link" href="./about.html" rel="" target="">
  <span class="menu-text">About Me</span></a>
   </li>  
   <li class="nav-item">
@@ -148,19 +148,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Naive Bayes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./Clustering.html" rel="" target="">
- <span class="menu-text">Clustering</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link" href="./dimensionality-reduction.html" rel="" target="">
  <span class="menu-text">Dimensionality Reduction</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Clustering.html" rel="" target="">
+ <span class="menu-text">Clustering</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./decision-trees.html" rel="" target="">
  <span class="menu-text">Decision Trees</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./conclusions.ipynb" rel="" target="">
+    <a class="nav-link" href="./conclusions.html" rel="" target="">
  <span class="menu-text">Conclusions</span></a>
   </li>  
 </ul>
@@ -187,6 +187,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#regular-play-data" id="toc-regular-play-data" class="nav-link" data-scroll-target="#regular-play-data">Regular Play Data</a></li>
   </ul></li>
   <li><a href="#team-power-play-data-with-point-brackets" id="toc-team-power-play-data-with-point-brackets" class="nav-link" data-scroll-target="#team-power-play-data-with-point-brackets">Team Power Play Data with Point Brackets</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
     </div>
@@ -523,6 +524,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>I imported the 2022 team data file then checked for missing values. I then selected the relevant columns and filtered out the non-power play data. After that, I added a label variable called points bracket that assigned each team a range that they fell in of season standing points.</p>
 <p>To prep for clustering, I removed the non-numerical data and normalized the numerical data, then exported the cleaned data frame to a CSV file.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>DSAN 5000 Lecture Content (Hickman 2023)</p>
 
 
 </section>

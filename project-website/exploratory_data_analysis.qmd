@@ -169,3 +169,7 @@ The scatter plot comparing regular season team points to number of goals scored 
 ## Conclusions and Hypothesis
 
 Based on the exploration of this data, we can conclude that power play success (in several different metrics) does relate to team success so evaluating teams success and quality during power plays should reveal predictors for regular season success. Additionally we learned that players don't necessarily have equally strong metrics in regular play and power play minutes. Combining these two results, I am hypothesizing that using metrics from power play data can provide different results when predicting the level of success a team will have at the conclusion of the regular season.
+
+## References
+
+DSAN 5000 Lecture Content (Hickman 2023)

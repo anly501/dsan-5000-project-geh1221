@@ -8,7 +8,7 @@
 
 <meta name="author" content="Grace Hyland">
 
-<title>An Analysis of Power Plays in the NHL - Introduction</title>
+<title>An Analysis of Power Plays in the NHL - Conclusions</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,26 +21,7 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -113,7 +94,7 @@ div.csl-indent {
  <span class="menu-text">Data</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./introduction.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="./introduction.html" rel="" target="">
  <span class="menu-text">Introduction</span></a>
   </li>  
   <li class="nav-item">
@@ -164,7 +145,14 @@ div.csl-indent {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#references" id="toc-references" class="nav-link active" data-scroll-target="#references">References</a></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link active" data-scroll-target="#conclusions">Conclusions</a>
+  <ul class="collapse">
+  <li><a href="#data-exploration" id="toc-data-exploration" class="nav-link" data-scroll-target="#data-exploration">Data Exploration</a></li>
+  <li><a href="#naive-bayes-model" id="toc-naive-bayes-model" class="nav-link" data-scroll-target="#naive-bayes-model">Naive Bayes Model</a></li>
+  <li><a href="#clustering" id="toc-clustering" class="nav-link" data-scroll-target="#clustering">Clustering</a></li>
+  <li><a href="#decision-trees" id="toc-decision-trees" class="nav-link" data-scroll-target="#decision-trees">Decision Trees</a></li>
+  </ul></li>
+  <li><a href="#future-directions" id="toc-future-directions" class="nav-link" data-scroll-target="#future-directions">Future Directions</a></li>
   </ul>
 </nav>
     </div>
@@ -173,7 +161,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Introduction</h1>
+<h1 class="title">Conclusions</h1>
 </div>
 
 
@@ -194,42 +182,41 @@ div.csl-indent {
 
 </header>
 
-<p>In recent decades, the time and attention put into understanding sports using data and modeling has greatly increased for all sports. The earliest adopting sport was baseball and some close followers have been American football and basketball. The sport of ice hockey took longer to adopt the practice relative to the others. One of the proposed reasons for this is that there are specific challenges that come with trying to collect and analyze data from hockey.</p>
-<p>These challenges include the infrequency of scoring events, the continuity of game play, and frequent substitutions. Ice hockey is one of the lowest scoring sports, especially compared to the likes of football and basketball. It is not uncommon for games to have fewer than two or three total goals scored. Given this, it can be hard to quantify the impact of each player on the success of their team and the impact that an individual play can have on a game’s outcome without creating more advanced statistical evaluation tools. It is as a result of this fact that the game of hockey is rather continuous compared to the discrete nature of sports such as football and baseball. Without a high number of scoring events, play is much less frequently halted so it is more difficult to classify events as individual plays. Additionally, the lack of stoppages in play mean that players are substituted in the middle of plays and events. This in combination with the very short length of shifts (typically under a minute) contribute to the difficulty of isolating the impact of players on the results of the game.</p>
-<p>Nonetheless, steps have been taken over the past two decades to improve the state of hockey analytics. At the beginning of the sport, the goals and assists by players were recorded by officials and coaches and for a long time that was the only data collected on the game. The earliest attempt at an advanced statistic in hockey was plus-minus. Plus-minus is calculated for each player by adding the goals scored for the team while the player is on the ice and subtracting the goals scored against the team while the player is on the ice. Plus-minus runs into the same issue as many statistics in hockey where it is difficult to separate individual players’ contributions and strengths from the overall strength of their team and their line because players are usually on the ice with the same people at the same time.</p>
-<p>Around the mid 2000s, people began to look beyond goals scored and allowed as the only data points that can be used to evaluate players. Some of the other factors considered are shots taken, penalty differential, quality of opponents, and the usage of players based on the zone location of the puck when they are deployed. One of the early popular evaluation metrics was Corsi. Corsi is calculated by taking the sum of shots on goal, missed shots, and blocked shots. In following years Corsi was modified to different iterations that account for some of the problems with the original metric such as Corsi relative (compares individual player to the rest of their team), Corsi close (only considers situations where the game is within one goal), and score adjusted Corsi (places shot attempts in the context of expectations based on the current score.) The major problem that remained after these adjustments is that the metric still doesn’t account for the quality of the shots taken.</p>
-<p>More recent research into hockey analytics metrics have focused on shot quality and expected goals. Shot quality was first brought up in 2004 and was found by cataloguing shot types and whether or not they were rebounds. Goal probability curves were fit to the shot types. The expected goal metric comes from summing the total goal probabilities. More modern research has focused on improving the expected goals model. Brian Macdonald (2012) created an expected goals metric using least squares regression and ridge regression models. In 2015, Sprigings and Toumi made a model that incorporated shot type, shot angle, distance from net, whether the shooter was shooting off their strong side, and a value of the player’s shooting talent.</p>
-<p>These new metrics have advanced analytics applications to the sport of hockey and have shown predictive power when looking at team and player success. However, often times a very important aspect of play in hockey is overlooked when applying these metrics: power plays and penalty kills.</p>
-<p>Power plays and penalty kills (together called special teams opportunities) are scenarios in which one team has an extra player on the ice compared to the other after a penalty. These scenarios vary a lot game to game which is why they are excluded from metrics, but they also are very important parts of the game outcome. About one third of goals scored in hockey games come from power plays (33.5% of goals in the olympics; 29% of goals in Finland’s hockey league). In this project I would like to explore the impact that power plays and penalty kills have on the outcome of games and seek answers to the question of how a coach should best approach special teams situations. I will look to address the following questions:</p>
-<ol type="1">
-<li>How does a team’s rate of power play goal success relate to their regular season success?</li>
-<li>How does a team’s rate of penalty kill goals allowed relate to their regular season success?</li>
-<li>Are these relationships the same for post season success?</li>
-<li>What kind of personnel can be used in special teams situations?</li>
-<li>How do player success metrics outside of special teams opportunities relate to their success in special teams opportunities?</li>
-<li>How does incorporating data from special teams opportunities into overall season metrics affect the predictivity of the metrics?</li>
-<li>Which player attributes are most important for power play success?</li>
-<li>Which player attributes are most important for penalty kill success?</li>
-<li>What effect does a successful power play have on winning the game?</li>
-<li>What effect does a successful penalty kill have on winning the game?</li>
-</ol>
-<section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References</h2>
-<p><span class="citation" data-cites="nandakumar2019">(<a href="#ref-nandakumar2019" role="doc-biblioref">Nandakumar and Jensen 2019</a>)</span></p>
-<p><span class="citation" data-cites="Macdonald2012AnEG">(<a href="#ref-Macdonald2012AnEG" role="doc-biblioref">Macdonald 2012</a>)</span></p>
-
+<section id="conclusions" class="level1">
+<h1>Conclusions</h1>
+<p>The power play is universally considered one of the most important parts of the game of hockey by most hockey fans. However, in my background research on the topic of analytical approaches to understanding and predicting hockey results I found that the action that occurs during power play minutes in NHL games is understudied and underutilized. In this portfolio I attempted to answer some questions about what we can learn from data from power plays and how this can be applied to a greater understanding of the quality of NHL teams. In this section I will summarize the results from the many methods I applied to answering these questions.</p>
+<section id="data-exploration" class="level2">
+<h2 class="anchored" data-anchor-id="data-exploration">Data Exploration</h2>
+<p>From performing preliminary data analysis, I learned that most of the traditional and simple modern hockey performance metrics have higher values for the same player in power play situations compared to regular play situations. Consequently, I concluded that power play time is very different play from regular situation play and this conclusion was corroborated by the demonstration that metrics during power play time are not necessarily correlated with that same metric during regular play time for a given player.</p>
+<p>The other major conclusion from the data exploration process was that team success measured by final standings points does appear to be correlated with power play success (measured in both total power play goals scored and power play success rate). This conclusion supports the idea that evaluating power play data can be very useful in creating a better data backed understanding of what a good NHL team is.</p>
+</section>
+<section id="naive-bayes-model" class="level2">
+<h2 class="anchored" data-anchor-id="naive-bayes-model">Naive Bayes Model</h2>
+<p>Following the exploratory data analysis process, I used a Naive Bayes classification machine learning model to predict whether or not a team would make the playoffs based on team expected goals percentage, Corsi, goals for, hits, takeaways, faceoffs won, giveaways, and shot attempts.</p>
+<p>Constructiing a model with both regular and power play data using both feature selection and no feature selection led to the following conclusions:</p>
+<p>The models that used all eight features had a higher accuracy and precision when using power play data to predict playoff berths than regular data so team play during a power play may be more predictive of playoff success than regular situation play.</p>
+<p>When using feature selection, the model that used regular play data had slightly higher accuracy but lower precision than the model that used power play data. Additionally, the power play data model did not use as many features to achieve these metrics. Therefore, using power play data with feature selection may create the best model when considering computational efficiency and preventing overfitting when applying to a large data set.</p>
+</section>
+<section id="clustering" class="level2">
+<h2 class="anchored" data-anchor-id="clustering">Clustering</h2>
+<p>Using clustering models on the team data with the features mentioned above revealed that there are three clear groups of teams that are more similar to each other than they are to other teams. These groupings did not line up with the labels I used for ranges of final standing points, but they did reveal that the bottom teams in the league standings that earned fewer than 80 points are more similar to each other based on these metrics during power plays than they are to any other teams in different point ranges. However, middle tier teams and top tier teams based on standings points may be more similar to each other than it appears based on standings.</p>
+</section>
+<section id="decision-trees" class="level2">
+<h2 class="anchored" data-anchor-id="decision-trees">Decision Trees</h2>
+<p>Creating and tuning a decision tree that predicts whether a team will make the playoffs based on metrics from power play data revealed that a major factor that separates playoff teams from non-playoff teams is team expected goal percentage on the power play. This makes sense when considering the importance of scoring goals on power plays that we determined during the exploratory data analysis process.</p>
+<p>The other conclusion gathered from the decision tree fitting process was that it is easier to predict from these metrics which teams will not make the playoffs than it is to properly classify teams that do not make the playoffs. This is consistent with the conclusion from the clustering tab that bottom tier teams are very similar to each other, but at the middle and top of the pack their is a great deal of parity.</p>
+</section>
+</section>
+<section id="future-directions" class="level1">
+<h1>Future Directions</h1>
+<p>Going off of the major conclusion about the parity between teams that are not considered bottom tier, in future work I would like to look more specifically at teams that are on the borderline between making the playoffs and missing the playoffs to see if there are any clear differences.</p>
+<p>One thing I could do is take team data from more seasons and only include observations from teams that are neither eliminated nor guaranteed for the playoffs a month before the regular season ends. With this data, I could tune models such as Naive Bayes classifiers and decision trees to to predict which teams will end up making the playoffs and determine which factors are most important.</p>
+<p>Another future goal is to use try to determine labels for the clusters that were generated on the clustering tab. The points ranges I initially used to label the data could be modified to be more in line with the differences in the quality of the teams.</p>
 
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
-<div id="ref-Macdonald2012AnEG" class="csl-entry" role="listitem">
-Macdonald, Brian. 2012. <span>“An Expected Goals Model for Evaluating NHL Teams and Players.”</span> In. <a href="https://api.semanticscholar.org/CorpusID:38704091">https://api.semanticscholar.org/CorpusID:38704091</a>.
-</div>
-<div id="ref-nandakumar2019" class="csl-entry" role="listitem">
-Nandakumar, Namita, and Shane T. Jensen. 2019. <span>“Historical Perspectives and Current Directions in Hockey Analytics.”</span> <em>Annual Review of Statistics and Its Application</em> 6 (1): 19–36. <a href="https://doi.org/10.1146/annurev-statistics-030718-105202">https://doi.org/10.1146/annurev-statistics-030718-105202</a>.
-</div>
-</div></section></div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

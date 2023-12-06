@@ -116,7 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html" rel="" target="">
+    <a class="nav-link" href="./about.html" rel="" target="">
  <span class="menu-text">About Me</span></a>
   </li>  
   <li class="nav-item">
@@ -148,19 +148,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Naive Bayes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./Clustering.html" rel="" target="" aria-current="page">
- <span class="menu-text">Clustering</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link" href="./dimensionality-reduction.html" rel="" target="">
  <span class="menu-text">Dimensionality Reduction</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./Clustering.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Clustering</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./decision-trees.html" rel="" target="">
  <span class="menu-text">Decision Trees</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./conclusions.ipynb" rel="" target="">
+    <a class="nav-link" href="./conclusions.html" rel="" target="">
  <span class="menu-text">Conclusions</span></a>
   </li>  
 </ul>
@@ -198,6 +198,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#features-plotted-with-target-labels" id="toc-features-plotted-with-target-labels" class="nav-link" data-scroll-target="#features-plotted-with-target-labels">Features Plotted with Target Labels</a></li>
   </ul></li>
   <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
     </div>
@@ -531,6 +532,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="conclusions" class="level2">
 <h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
+<p>Based on the clusters formed by K-Means and Agglomerative clustering, the set of data that includes all 32 NHL teams during the 2022-2023 season and their team Corsi, Expected Goals, Hits, Takewaways, Giveaways, Faceoff Wins, Goals, and Shot Attempts can be readily grouped into distinct categories.</p>
+<p>Based on hyperparameter tuning, I can conclude that the groupings that make the most sense and keep the most similar teams together results in three different categories. This lines up with the hypothesis I had before clustering about there being three categories of teams by the end of the regular season: playoff teams, teams that were in playoff contention, and teams that were never really in playoff contention.</p>
+<p>However, the clusters that are formed from unsupervised learning with the data were pretty different from the labels I added to the data that categorized them into final standings points ranges. The teams that had a very low number of points (under 80) did cluster together somewhat on the graph as noted above, but the ranges of 80-100 points and over 100 points did not have any clear distinctions based on the features used.</p>
+<p>This may mean that teams that make the playoffs and teams that just miss the playoffs are more similar than they are different. Alternatively, different segmentation of the final points standings for the labels may result in clearer groupings meaning teams that have point values in the 80s may be very similar to each other but not to teams with point values in the 90s.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>DSAN 5000 Lecture Content (Hickman 2023)</p>
 
 
 </section>

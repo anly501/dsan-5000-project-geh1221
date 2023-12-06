@@ -1,7 +1,23 @@
 ---
-title: "DSAN 5000 Project"
+title: "About Me"
 ---
+Hello everyone! My name is Grace Hyland and I am currently a first year graduate student at Georgetown University in the Data Science and Analytics program. I am completing this degree through the accelerated BS/MS program meaning I am a senior undergraduate student completing my coursework for a Bachelor's of Science in Biology of Global Health as well while beginning my course towards a Master of Science in Data Science and Analytics.
 
-Grace Hyland is a student at Georgetown University. She is currently working on a B.S. in Biology of Global Health and taking classes towards an M.S. in Data Science and Analytics through the accelerated BS/MS program.
+As an undergraduate student at Georgetown University I have experience as a Teaching Assistant for foundational level courses in the Biology Department and have gained many important leadership skills from serving on the Executive Board of my sorority Kappa Alpha Theta for two years.
 
-![headshot]("images/headshot.JPG")
+In my free time you can usually find me out for a run, exploring coffee shops with friends, or watching any sports event that is on. My interests in life vary and change a lot so I am always excited by the idea of having the data science tools to explore any topic that's currently holding my attention in a detailed manner.
+
+![](images/headshot.JPG){fig-align="left" width="200"}
+
+### Education
+
+M.S. Data Science and Analytics, Georgetown University (Expected May 2025)
+
+B.S. Biology of Global Health, Georgetown University (Expected, May 2024)
+
+### Contact Me
+
+Email: grace.hyland7\@gmail.com
+
+Linkedin: https://www.linkedin.com/in/grace-hyland-1b2638205/
+
