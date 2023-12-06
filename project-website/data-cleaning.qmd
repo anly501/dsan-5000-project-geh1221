@@ -1,0 +1,247 @@
+---
+title: "Data Cleaning"
+author: "Grace Hyland"
+format:
+  html:
+    code-fold: true
+editor: visual
+---
+
+## Player Data Cleaning
+
+```{r}
+#load data
+library(tidyverse)
+data <- read.csv("../data/00-raw-data/skaters.csv")
+
+#check for missing values
+sum(is.na(data))
+
+#remove unnecessary columns and rename columns
+data <- subset(data, select=c(playerId,season,name,team,position,situation,games_played,icetime,shifts,iceTimeRank,onIce_xGoalsPercentage,onIce_corsiPercentage,I_F_shotAttempts,I_F_points,I_F_goals,I_F_faceOffsWon,I_F_takeaways,I_F_giveaways,I_F_hits))
+colnames(data) <- c("ID","season","name","team","position","situation","games_played","icetime","shifts","iceTimeRank","expectedGoals","corsi","shotAttempts","points","goals","faceoffsWon","takeways","giveaways","hits")
+
+#remove players who played in fewer than half of the games in the season
+data <- filter(data, games_played>=41)
+
+#separate dataframes for regular play, power plays, and penalty kills
+regular_player_data <- filter(data, situation=="5on5")
+pp_player_data <- filter(data, situation=="5on4")
+
+#save cleaned data
+write.csv(regular_player_data, "../data/01-modified-data/skaters_clean.csv")
+write.csv(pp_player_data, "../data/01-modified-data/skaters_pp.csv")
+
+```
+
+The first data set that I used in this portfolio was the data on players in the 2022-2023 season. I imported the data as a csv file to a data frame in R. The first step I took in the data cleaning process was checking of any missing values. This data set came relatively clean so there were not any missing values.
+
+The data frame did however start with 154 total columns which is too large for the scope of this project so I selected 19 columns to keep in the data set including identification information and 9 variables that are metrics of how well the player plays. I also had to rename the columns to simpler names.
+
+The next step I took was removing players who were not regular starters on their teams. This was done by filtering by games played so only players who have played in at least half of the games in the season are included.
+
+Finally, I separated the data into data on players during power plays and data on players during regular 5 on 5 play and exported these separated data frames to new CSV files.
+
+## Team Record Data
+
+```{r}
+#load data
+library(tidyverse)
+data <- read.csv("../data/00-raw-data/team_records.csv")
+
+#check for missing values
+sum(is.na(data))
+
+
+#remove unnecessary columns and change column names
+data <- subset(data, select=c(X,PTS, PP, PPO, PP., PPA, PPOA, PK.))
+colnames(data) <- c("team","points", "ppGoals","ppOpps","ppPercent","pkGoalsAgainst","pkOppsAgainst","pkPercent")
+
+#change team names to match other datasets
+data$team <- c("BOS","CAR","NJD","VGK","TOR","COL","EDM","DAL","NYR","LAK","MIN","SEA","TBL","WPG","CGY","NYI","FLA","NSH","BUF","PIT","OTT","VAN","STL","WSH","DET","PHI","ARI","MTL","SJS","CHI","CBJ","ANA")
+
+
+#save cleaned data
+write.csv(data, "../data/01-modified-data/team_record_clean.csv")
+```
+
+The next data set I use in the portfolio is the team record data. I first imported the CSV of the data set as a data frame in R. I then checked for missing values in the data and there were none.
+
+After that I selected the columns that will be relevant for my data science questions and renamed the columns. These columns include team name, points, power play goals, power play opportunities, power play percent, penalty kill goals against, penalty opportunities against, and penalty kill percent.
+
+The team name column did not use the same abbreviations as the team name column in other data sets used in the portfolio so I adjusted the values of the columns to match.
+
+I then exported the clean data frame to a CSV file.
+
+## Team Power Play and Regular Play Data
+
+### Power Play Data
+
+```{r}
+#load data
+data2022 <- read.csv("../data/00-raw-data/team_data_2022.csv")
+data2021 <- read.csv("../data/00-raw-data/team_data_2021.csv")
+data2020 <- read.csv("../data/00-raw-data/team_data_2020.csv")
+data2018 <- read.csv("../data/00-raw-data/team_data_2018.csv")
+library(tidyverse)
+
+#check for missing values
+sum(is.na(data2022))
+sum(is.na(data2021))
+sum(is.na(data2020))
+sum(is.na(data2018))
+
+
+#remove unnecessary columns and change column names
+data2022 <- subset(data2022, select=c(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,goalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))
+data2021 <- subset(data2021, select=c(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,goalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))
+data2020 <- subset(data2020, select=c(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,goalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))
+data2018 <- subset(data2018, select=c(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,goalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))
+
+#filter non powerplay data
+data2022<- data2022 %>% filter(situation=="5on4")
+data2021<- data2021 %>% filter(situation=="5on4")
+data2020<- data2020 %>% filter(situation=="5on4")
+data2018<- data2018 %>% filter(situation=="5on4")
+
+#add variable for playoff teams
+playoff_teams_2018 <- c("T.B","BOS","TOR","WSH","NYI","PIT","CAR","CBJ","NSH","WPG","STL","DAL","COL","CGY","S.J","VGK")
+playoff_teams_2020 <- c("CAR","FLA","T.B","NSH","PIT","WSH","BOS","NYI","TOR","EDM","WPG","MTL","COL","VGK","MIN","STL")
+playoff_teams_2021 <- c("FLA","TOR","TBL","BOS","CAR","NYR","PIT","WSH","COL","MIN","STL","DAL","NSH","CGY","EDM","LAK")
+playoff_teams_2022 <- c("BOS","TOR","TBL","FLA","CAR","NJD","NYR","NYI","COL","DAL","MIN","WPG","VGK","EDM","LAK","SEA")
+
+data2022$playoff <- NA
+data2021$playoff <- NA
+data2020$playoff <- NA
+data2018$playoff <- NA
+
+data2022<-data2022 %>% mutate(playoff = ifelse(team %in% playoff_teams_2022,1,0))
+data2021<-data2021 %>% mutate(playoff = ifelse(team %in% playoff_teams_2021,1,0))
+data2020<-data2020 %>% mutate(playoff = ifelse(team %in% playoff_teams_2020,1,0))
+data2018<-data2018 %>% mutate(playoff = ifelse(team %in% playoff_teams_2018,1,0))
+
+
+
+#combine datasets
+data <- rbind(data2022, data2021, data2020, data2018)
+
+#remove non-numerical data
+data <- subset(data, select=-c(team,situation,team.1,situation.1))
+
+#normalize numerical data
+data<-mutate(data, xGoalsPercentage=xGoalsPercentage/mean(xGoalsPercentage), corsiPercentage=corsiPercentage/mean(corsiPercentage), shotAttemptsFor=shotAttemptsFor/mean(shotAttemptsFor), goalsFor=goalsFor/mean(goalsFor), faceOffsWonFor=faceOffsWonFor/mean(faceOffsWonFor), takeawaysFor=takeawaysFor/mean(takeawaysFor),giveawaysFor=giveawaysFor/mean(giveawaysFor),hitsFor=hitsFor/mean(hitsFor))
+
+#save cleaned data
+write.csv(data, "../data/01-modified-data/team_pp_data_clean.csv")
+```
+
+### Regular Play Data
+
+```{r}
+#load data
+data2022 <- read.csv("../data/00-raw-data/team_data_2022.csv")
+data2021 <- read.csv("../data/00-raw-data/team_data_2021.csv")
+data2020 <- read.csv("../data/00-raw-data/team_data_2020.csv")
+data2018 <- read.csv("../data/00-raw-data/team_data_2018.csv")
+library(tidyverse)
+
+#check for missing values
+sum(is.na(data2022))
+sum(is.na(data2021))
+sum(is.na(data2020))
+sum(is.na(data2018))
+
+
+#remove unnecessary columns and change column names
+data2022 <- subset(data2022, select=c(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,goalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))
+data2021 <- subset(data2021, select=c(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,goalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))
+data2020 <- subset(data2020, select=c(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,goalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))
+data2018 <- subset(data2018, select=c(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,goalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))
+
+#filter non regular play data
+data2022<- data2022 %>% filter(situation=="5on5")
+data2021<- data2021 %>% filter(situation=="5on5")
+data2020<- data2020 %>% filter(situation=="5on5")
+data2018<- data2018 %>% filter(situation=="5on5")
+
+#add variable for playoff teams
+playoff_teams_2018 <- c("T.B","BOS","TOR","WSH","NYI","PIT","CAR","CBJ","NSH","WPG","STL","DAL","COL","CGY","S.J","VGK")
+playoff_teams_2020 <- c("CAR","FLA","T.B","NSH","PIT","WSH","BOS","NYI","TOR","EDM","WPG","MTL","COL","VGK","MIN","STL")
+playoff_teams_2021 <- c("FLA","TOR","TBL","BOS","CAR","NYR","PIT","WSH","COL","MIN","STL","DAL","NSH","CGY","EDM","LAK")
+playoff_teams_2022 <- c("BOS","TOR","TBL","FLA","CAR","NJD","NYR","NYI","COL","DAL","MIN","WPG","VGK","EDM","LAK","SEA")
+
+data2022$playoff <- NA
+data2021$playoff <- NA
+data2020$playoff <- NA
+data2018$playoff <- NA
+
+data2022<-data2022 %>% mutate(playoff = ifelse(team %in% playoff_teams_2022,1,0))
+data2021<-data2021 %>% mutate(playoff = ifelse(team %in% playoff_teams_2021,1,0))
+data2020<-data2020 %>% mutate(playoff = ifelse(team %in% playoff_teams_2020,1,0))
+data2018<-data2018 %>% mutate(playoff = ifelse(team %in% playoff_teams_2018,1,0))
+
+
+
+#combine datasets
+data <- rbind(data2022, data2021, data2020, data2018)
+
+#remove non-numerical data
+data <- subset(data, select=-c(team,situation,team.1,situation.1))
+
+#normalize numerical data
+data<-mutate(data, xGoalsPercentage=xGoalsPercentage/mean(xGoalsPercentage), corsiPercentage=corsiPercentage/mean(corsiPercentage), shotAttemptsFor=shotAttemptsFor/mean(shotAttemptsFor), goalsFor=goalsFor/mean(goalsFor), faceOffsWonFor=faceOffsWonFor/mean(faceOffsWonFor), takeawaysFor=takeawaysFor/mean(takeawaysFor),giveawaysFor=giveawaysFor/mean(giveawaysFor),hitsFor=hitsFor/mean(hitsFor))
+
+#save cleaned data
+write.csv(data, "../data/01-modified-data/team_regular_data_clean.csv")
+
+
+```
+
+The power play team data and regular play team data had identical cleaning processes. They both started with importing team data for each of the four included seasons and checking for missing values. There were no missing values in these data sets.
+
+Next, I selected the relevant columns for each of the four data sets and renamed them, then filtered the data sets by either 5 on 5 play of 5 on 4 play. I had to add a label variable for whether or not each team made the playoffs in that season so I added an empty column to each data set and created a variable that included the names of the playoff teams in each season. I was then able to mutate the playoff variable to assign each team 0 (meaning they did not make the playoffs) or 1 (meaning the did make the playoffs).
+
+With the new playoff variable, the data sets for the four years were combined into one and non-numerical data was removed. After removing the non-numerical data, the numerical data was normalized.
+
+Following this, the data was prepped to be used in a Naive Bayes model so I exported each of the two data frames to CSV files.
+
+## Team Power Play Data with Point Brackets
+
+The next data set I cleaned and used was the power play data with the labels being point brackets instead of a binary playoff variable assignment.
+
+```{r}
+#load data
+data2022 <- read.csv("../data/00-raw-data/team_data_2022.csv")
+library(tidyverse)
+
+#check for missing values
+sum(is.na(data2022))
+
+
+
+#remove unnecessary columns and change column names
+data2022 <- subset(data2022, select=c(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,xGoalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))
+
+#filter non powerplay data
+data2022<- data2022 %>% filter(situation=="5on4")
+
+
+#add variable for points bracket
+points_bracket <- c("mid_tier","over100","under80","under80","mid_tier","mid_tier","over100","mid_tier","mid_tier","over100","mid_tier","under80","mid_tier","mid_tier","over100","over100","over100","over100","under80","over100","over100","under80","under80","under80","over100","mid_tier","mid_tier","over100","over100","mid_tier","mid_tier","mid_tier")
+data <- data2022 %>% mutate(points_cat=points_bracket)
+
+
+
+#remove non-numerical data
+data <- subset(data, select=-c(team,situation,team.1,situation.1))
+
+#normalize numerical data
+data<-mutate(data, xGoalsPercentage=xGoalsPercentage/mean(xGoalsPercentage), corsiPercentage=corsiPercentage/mean(corsiPercentage), shotAttemptsFor=shotAttemptsFor/mean(shotAttemptsFor), xGoalsFor=xGoalsFor/mean(xGoalsFor), faceOffsWonFor=faceOffsWonFor/mean(faceOffsWonFor), takeawaysFor=takeawaysFor/mean(takeawaysFor),giveawaysFor=giveawaysFor/mean(giveawaysFor),hitsFor=hitsFor/mean(hitsFor))
+
+#save cleaned data
+write.csv(data, "../data/01-modified-data/team_pp_data_point_bracket_clean.csv")
+```
+
+I imported the 2022 team data file then checked for missing values. I then selected the relevant columns and filtered out the non-power play data. After that, I added a label variable called points bracket that assigned each team a range that they fell in of season standing points.
+
+To prep for clustering, I removed the non-numerical data and normalized the numerical data, then exported the cleaned data frame to a CSV file.

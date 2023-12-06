@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Grace Hyland">
 
 <title>DSAN 5000 Portfolio Project - Introduction to Naive Bayes</title>
 <style>
@@ -131,11 +132,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Introduction</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./data-gathering.ipynb" rel="" target="">
+    <a class="nav-link" href="./data-gathering.html" rel="" target="">
  <span class="menu-text">Data Gathering</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./data-cleaning.ipynb" rel="" target="">
+    <a class="nav-link" href="./data-cleaning.html" rel="" target="">
  <span class="menu-text">Data Cleaning</span></a>
   </li>  
   <li class="nav-item">
@@ -147,20 +148,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Naive Bayes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./Clustering.ipynb" rel="" target="">
+    <a class="nav-link" href="./Clustering.html" rel="" target="">
  <span class="menu-text">Clustering</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./dimensionality-reduction.ipynb" rel="" target="">
+    <a class="nav-link" href="./dimensionality-reduction.html" rel="" target="">
  <span class="menu-text">Dimensionality Reduction</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./decision-trees.ipynb" rel="" target="">
+    <a class="nav-link" href="./decision-trees.html" rel="" target="">
  <span class="menu-text">Decision Trees</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./arm.ipynb" rel="" target="">
- <span class="menu-text">ARM</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./conclusions.ipynb" rel="" target="">
@@ -182,9 +179,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#prepare-data-for-naive-bayes" id="toc-prepare-data-for-naive-bayes" class="nav-link active" data-scroll-target="#prepare-data-for-naive-bayes">Prepare Data for Naive Bayes</a></li>
-  <li><a href="#feature-selection" id="toc-feature-selection" class="nav-link" data-scroll-target="#feature-selection">Feature Selection</a></li>
+  <li><a href="#naive-bayes-model-using-powerplay-data" id="toc-naive-bayes-model-using-powerplay-data" class="nav-link active" data-scroll-target="#naive-bayes-model-using-powerplay-data">Naive Bayes Model Using Powerplay Data</a>
+  <ul class="collapse">
+  <li><a href="#prepare-power-play-data-for-naive-bayes" id="toc-prepare-power-play-data-for-naive-bayes" class="nav-link" data-scroll-target="#prepare-power-play-data-for-naive-bayes">Prepare Power Play Data for Naive Bayes</a></li>
   <li><a href="#naive-bayes" id="toc-naive-bayes" class="nav-link" data-scroll-target="#naive-bayes">Naive Bayes</a></li>
+  <li><a href="#feature-selection" id="toc-feature-selection" class="nav-link" data-scroll-target="#feature-selection">Feature Selection</a></li>
+  </ul></li>
+  <li><a href="#naive-bayes-model-using-regular-play-data" id="toc-naive-bayes-model-using-regular-play-data" class="nav-link" data-scroll-target="#naive-bayes-model-using-regular-play-data">Naive Bayes Model Using Regular Play Data</a>
+  <ul class="collapse">
+  <li><a href="#prepare-regular-play-data-for-naive-bayes" id="toc-prepare-regular-play-data-for-naive-bayes" class="nav-link" data-scroll-target="#prepare-regular-play-data-for-naive-bayes">Prepare Regular Play Data for Naive Bayes</a></li>
+  <li><a href="#naive-bayes-1" id="toc-naive-bayes-1" class="nav-link" data-scroll-target="#naive-bayes-1">Naive Bayes</a></li>
+  <li><a href="#feature-selection-1" id="toc-feature-selection-1" class="nav-link" data-scroll-target="#feature-selection-1">Feature Selection</a></li>
+  <li><a href="#naive-bayes-after-feature-selection" id="toc-naive-bayes-after-feature-selection" class="nav-link" data-scroll-target="#naive-bayes-after-feature-selection">Naive Bayes After Feature Selection</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -200,6 +207,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Grace Hyland </p>
+          </div>
+  </div>
     
   
     
@@ -210,163 +223,409 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>The Naive Bayes classification machine learning model uses Bayes Theorem to classify data points into one of several labels. When multiple features are used, the model calculates the probability of each label being the true label based on the conditional probability from the state of the feature. This is done for each of the features present, and the model assigns the label with the highest probability.</p>
 <p>The Naive Bayes model operates under the assumption that the effects of the different features are independent of one another.</p>
-<p>Given my prior hypothesis that certain team evaluation metrics during powerplays may be more predictive of regular season team success, I am looking to use Naive Bayes classification to determine which features are most predictive and then determine if these features during power play situations can be more accurately used to train a ML model to predict playoff berths then features from regular 5 on 5 game play.</p>
-<section id="prepare-data-for-naive-bayes" class="level3">
-<h3 class="anchored" data-anchor-id="prepare-data-for-naive-bayes">Prepare Data for Naive Bayes</h3>
-<p>I prepared the team powerplay data for Naive Bayes classification in an R file linked here. Team data from the 2018-2019, 2020-2021, 2021-2022, and 2022-2023 seasons were combined and the desired features were subsetted from the greater dataset. An additional variable was added for whether or not the team made the playoffs that season and all numerical metrics were normalized. Finally, all non-numerical variables except the playoff variable were removed.</p>
-<div class="cell" data-execution_count="83">
+<p>Given my prior hypothesis that certain team evaluation metrics during powerplays may be more predictive of regular season team success, I am looking to use Naive Bayes classification to determine which features are most predictive and then determine if these features during power play situations can be more accurately used to train a ML model to predict playoff berths than features from regular 5 on 5 game play.</p>
+<section id="naive-bayes-model-using-powerplay-data" class="level2">
+<h2 class="anchored" data-anchor-id="naive-bayes-model-using-powerplay-data">Naive Bayes Model Using Powerplay Data</h2>
+<section id="prepare-power-play-data-for-naive-bayes" class="level3">
+<h3 class="anchored" data-anchor-id="prepare-power-play-data-for-naive-bayes">Prepare Power Play Data for Naive Bayes</h3>
+<p>I prepared the team powerplay data for Naive Bayes classification in an R file linked in the Code page. Team data from the 2018-2019, 2020-2021, 2021-2022, and 2022-2023 seasons were combined and the desired features were subsetted from the greater dataset. An additional variable was added for whether or not the team made the playoffs that season and all numerical metrics were normalized. Finally, all non-numerical variables except the playoff variable were removed. To begin building the model on powerplay data, I first had to import the necessary libraries.</p>
+<div class="cell" data-execution_count="1">
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sklearn</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> metrics</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.stats</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> spearmanr</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> itertools</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> chain, combinations</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-<div class="cell" data-execution_count="84">
+<p>I loaded the previously cleaned dataset “team_pp_data_clean.csv” and prepared it for use by a Naive Bayes model by creating a separate dataframe to hold the labels and then removed the column of labels to create a data frame that holds the features. The values of the features were already normalized in the cleaning process. I also created a variable holding a list of the feature names.</p>
+<div class="cell" data-execution_count="2">
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df<span class="op">=</span>pd.read_csv(<span class="st">"../data/01-modified-data/team_pp_data_clean.csv"</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.shape)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>label <span class="op">=</span> df[<span class="st">'playoff'</span>].copy()</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>df<span class="op">=</span>df.drop(columns<span class="op">=</span>[<span class="st">'Unnamed: 0'</span>,<span class="st">'playoff'</span>])</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>features<span class="op">=</span>df.columns</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>feature_matrix <span class="op">=</span> df[features].copy()</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>(126, 10)</code></pre>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>label <span class="op">=</span> df[<span class="st">'playoff'</span>].copy()</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>df<span class="op">=</span>df.drop(columns<span class="op">=</span>[<span class="st">'Unnamed: 0'</span>,<span class="st">'playoff'</span>])</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>features<span class="op">=</span>df.columns</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>feature_matrix <span class="op">=</span> df[features].copy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-</div>
-<div class="cell" data-execution_count="67">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> feature_matrix</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>y<span class="op">=</span> label</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    X, y,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    test_size<span class="op">=</span><span class="fl">0.2</span>,</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">100</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>After loading the pre-prepared dataset, I used sklearn to split the dataset into a training set and a test set with an 80-20 split. It is important to keep a portion of the data aside to test the accuracy of the model on.</p>
-</section>
-<section id="feature-selection" class="level3">
-<h3 class="anchored" data-anchor-id="feature-selection">Feature Selection</h3>
-<p>Feature selection is a process by which only the most predictive and least correlated features are used to train a model in order to maximize accuracy.</p>
-<p>To find the subset of features that result in the highest accuracy score, I will find every possible combination of the seven features and calculate a metric to evaluate their correlation coefficients.</p>
-<div class="cell" data-execution_count="68">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> chain, combinations</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#list all possible feature subsets</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>feature_subsets <span class="op">=</span> <span class="bu">list</span>(features)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>feature_subset<span class="op">=</span>chain.from_iterable(combinations(feature_subsets,r) <span class="cf">for</span> r <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(feature_subsets)<span class="op">+</span><span class="dv">1</span>))</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>feature_subset<span class="op">=</span><span class="bu">list</span>(feature_subset)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-execution_count="81">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>X_train_df<span class="op">=</span>pd.DataFrame(X_train, columns<span class="op">=</span>features)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>X_test_df<span class="op">=</span>pd.DataFrame(X_test, columns<span class="op">=</span>features)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> spearmanr</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> itertools</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#calculate spearman correlation coefficients for each subset</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mean_xx_corr(x_df):</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    df_colnames<span class="op">=</span>x_df.columns</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    xx_corrs<span class="op">=</span>[]</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    df_colname_pairs<span class="op">=</span>itertools.combinations(df_colnames, <span class="dv">2</span>)</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> colname1, colname2 <span class="kw">in</span> df_colname_pairs:</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        col1<span class="op">=</span>x_df[colname1]</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        col2<span class="op">=</span>x_df[colname2]</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        xx_pair_corr<span class="op">=</span>spearmanr(col1, col2).stastic</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        xx_corrs.append(xx_pair_corr)</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.mean(xx_corrs)</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_mean_xy_corr(x_df, y_vec):</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    df_colnames<span class="op">=</span>x_df.columns</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    xy_corrs<span class="op">=</span>[]</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> colname <span class="kw">in</span> df_colnames:</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>        x_col <span class="op">=</span> x_df[colname]</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>        xy_pair_corr <span class="op">=</span> spearmanr(x_col, y_vec)</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>        xy_corrs.append(xy_pair_corr)</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.mean(xy_corrs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>     xGoalsPercentage  corsiPercentage  shotAttemptsFor  xGoalsFor  \
-70           1.006796         1.022595         0.850992   0.722261   
-72           0.972079         0.976114         0.640017   0.695782   
-68           1.053086         1.022595         0.815534   0.802483   
-41           1.018369         0.999354         1.065513   1.289058   
-82           0.983652         0.999354         0.842127   0.776004   
-..                ...              ...              ...        ...   
-87           1.064658         1.034216         0.808442   0.998581   
-103          0.925790         0.952873         1.063740   1.069103   
-67           0.972079         0.976114         0.682566   0.731174   
-24           1.041514         1.022595         1.196707   1.294826   
-8            0.937362         0.976114         1.147066   1.024535   
-
-     faceOffsWonFor  takeawaysFor  giveawaysFor   hitsFor  
-70         0.790867      0.506702      0.597073  0.619545  
-72         0.617865      0.731903      0.807805  0.774431  
-68         0.677180      0.844504      0.720000  0.580824  
-41         1.176415      0.844504      0.878049  0.580824  
-82         0.899612      0.675603      0.509268  1.084204  
-..              ...           ...           ...       ...  
-87         0.815582      0.619303      0.842927  0.193608  
-103        1.122043      0.957105      1.440000  0.890596  
-67         0.687066      0.788204      0.649756  0.929318  
-24         1.359303      0.394102      0.772683  1.200369  
-8          0.988584      0.957105      1.159024  0.968039  
-
-[100 rows x 8 columns]</code></pre>
-</div>
-<div class="cell-output cell-output-error">
-<pre><code>InvalidIndexError: (0, slice(4, 5, None))</code></pre>
-</div>
+<p>After loading the pre-prepared dataset, I used sklearn to split the dataset into a training set and a test set with an 80-20 split. It is important to keep a portion of the data aside to test the accuracy of the model on so as to prevent overfitting to the test data.</p>
+<div class="cell" data-execution_count="3">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> feature_matrix</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>y<span class="op">=</span> label</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    X, y,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    test_size<span class="op">=</span><span class="fl">0.2</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">100</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 <section id="naive-bayes" class="level3">
 <h3 class="anchored" data-anchor-id="naive-bayes">Naive Bayes</h3>
-<p>The first NB model I used incorporated the data from all seven features. The GaussianNB model from the sklearn package was trained on the previously partitioned train data.</p>
-<div class="cell" data-execution_count="74">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.naive_bayes <span class="im">import</span> GaussianNB</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>model<span class="op">=</span>GaussianNB()</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>model.fit(X_train, y_train)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score </span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> f1_score</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> confusion_matrix</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> ConfusionMatrixDisplay</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>y_pred<span class="op">=</span>model.predict(X_test)</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>accuracy<span class="op">=</span>accuracy_score(y_pred, y_test)</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> f1_score(y_pred, y_test, average<span class="op">=</span><span class="st">"weighted"</span>)</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(accuracy)</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(f1)</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>cm<span class="op">=</span>confusion_matrix(y_test, y_pred)</span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>disp<span class="op">=</span>ConfusionMatrixDisplay(confusion_matrix<span class="op">=</span>cm, display_labels<span class="op">=</span>[<span class="st">"Non-playoff team"</span>,<span class="st">"Playoff team"</span>])</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>disp.plot()</span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The first NB model I used incorporated the data from all eight features. The GaussianNB model from the sklearn package was trained on the previously partitioned training data.</p>
+<div class="cell" data-execution_count="4">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.naive_bayes <span class="im">import</span> GaussianNB</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>model<span class="op">=</span>GaussianNB()</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>model.fit(X_train, y_train)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> f1_score</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> confusion_matrix</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> ConfusionMatrixDisplay</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>y_pred<span class="op">=</span>model.predict(X_test)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>accuracy<span class="op">=</span>accuracy_score(y_pred, y_test)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> f1_score(y_pred, y_test, average<span class="op">=</span><span class="st">"weighted"</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Accuracy score:"</span>,accuracy)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"F1 score:"</span>,f1)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Precision:"</span>, sklearn.metrics.precision_score(y_pred,y_test))</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>cm<span class="op">=</span>confusion_matrix(y_test, y_pred)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>disp<span class="op">=</span>ConfusionMatrixDisplay(confusion_matrix<span class="op">=</span>cm, display_labels<span class="op">=</span>[<span class="st">"Non-playoff team"</span>,<span class="st">"Playoff team"</span>])</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>disp.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
-<pre><code>0.8076923076923077
-0.809839283523494</code></pre>
+<pre><code>Accuracy score: 0.8076923076923077
+F1 score: 0.809839283523494
+Precision: 0.875</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="74">
-<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x7fb3821aa800&gt;</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x13fdfbc70&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="naive_bayes_files/figure-html/cell-7-output-3.png" class="img-fluid"></p>
+<p><img src="naive_bayes_files/figure-html/cell-5-output-3.png" width="603" height="434"></p>
 </div>
 </div>
-<p>After training on the training data, I had the model predict whether the records in the test data were playoff teams based on their features. The accuracy and f1 scores were both around 80% which is pretty high and the confusion matrix shows that the model was equally proficient at predicting teams to make the playoffs as they are at predicting teams to miss the playoffs.</p>
+<p>After training on the training data, I had the model predict whether the records in the test data were playoff teams based on their features. The accuracy and f1 scores were both around 80% which is pretty high, the precision score is 87.5% and the confusion matrix shows that the model was equally proficient at predicting teams to make the playoffs as they are at predicting teams to miss the playoffs.</p>
 <p>Further, I would like to test other subsets of features to find a more accurate model. And then carry out the same process to evaluate models based on regular 5 on 5 play and compare the accuracy of these two models.</p>
 <p>For now, it is clear to see that player evaluation metrics during power plays can be used to predict regular season success.</p>
+</section>
+<section id="feature-selection" class="level3">
+<h3 class="anchored" data-anchor-id="feature-selection">Feature Selection</h3>
+<p>Feature selection is a process by which only the most predictive and least correlated features are used to train a model in order to maximize accuracy.</p>
+<p>To find the subset of features that result in the highest accuracy score, I will find every possible combination of the eight features and calculate a metric to evaluate their correlation coefficients.</p>
+<div class="cell" data-execution_count="5">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#list all possible feature subsets</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>feature_subsets <span class="op">=</span> <span class="bu">list</span>(features)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>feature_subset<span class="op">=</span>chain.from_iterable(combinations(feature_subsets,r) <span class="cf">for</span> r <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(feature_subsets)<span class="op">+</span><span class="dv">1</span>))</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>feature_subset<span class="op">=</span><span class="bu">list</span>(feature_subset)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>After creating a list of all possible feature subsets from the data, I created functions to calculate the average correlation between all pairs of features in any given subset and the average correlation between each feature in the subset and the label data. The values returned by the function can be used to calculate a merit score for each feature subset to determine the best feature subset. The best feature subset will be a set of features that are minimally correlated with each other and maximally correlated with the label data.</p>
+<div class="cell" data-execution_count="6">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#calculate spearman correlation coefficients for each subset</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#function for mean correlation between each pair of features in the subset</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mean_xx_corr(x_df):</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    df_colnames<span class="op">=</span>x_df.columns</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    xx_corrs<span class="op">=</span>[]</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    df_colname_pairs<span class="op">=</span>itertools.combinations(df_colnames, <span class="dv">2</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> colname1, colname2 <span class="kw">in</span> df_colname_pairs:</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        col1<span class="op">=</span>x_df[colname1]</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        col2<span class="op">=</span>x_df[colname2]</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        xx_pair_corr<span class="op">=</span>scipy.stats.spearmanr(col1, col2)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        xx_corrs.append(xx_pair_corr)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.mean(xx_corrs)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#function for mean correlation between each feature in the subset and the label</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_mean_xy_corr(x_df, y_vec):</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    df_colnames<span class="op">=</span>x_df.columns</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    xy_corrs<span class="op">=</span>[]</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> colname <span class="kw">in</span> df_colnames:</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>        x_col <span class="op">=</span> x_df[colname]</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>        xy_pair_corr <span class="op">=</span> spearmanr(x_col, y_vec)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>        xy_corrs.append(xy_pair_corr)</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.mean(xy_corrs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Using the functions above, I iterated over each possible subset to calculate the merit score for all feature subsets.</p>
+<div class="cell" data-execution_count="7">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>best_subset<span class="op">=</span>np.NaN</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>best_merit_score<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(feature_subset)):</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    subset<span class="op">=</span>feature_subset[i]</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(subset)<span class="op">==</span><span class="dv">1</span>:</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        df_sub<span class="op">=</span>df[[subset[<span class="dv">0</span>]]]</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(subset)<span class="op">==</span><span class="dv">2</span>:</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        df_sub<span class="op">=</span>df[[subset[<span class="dv">0</span>],subset[<span class="dv">1</span>]]]</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(subset)<span class="op">==</span><span class="dv">3</span>:</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        df_sub<span class="op">=</span>df[[subset[<span class="dv">0</span>],subset[<span class="dv">1</span>],subset[<span class="dv">2</span>]]]</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(subset)<span class="op">==</span><span class="dv">4</span>:</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>        df_sub<span class="op">=</span>df[[subset[<span class="dv">0</span>],subset[<span class="dv">1</span>],subset[<span class="dv">2</span>],subset[<span class="dv">3</span>]]]</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(subset)<span class="op">==</span><span class="dv">5</span>:</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>        df_sub<span class="op">=</span>df[[subset[<span class="dv">0</span>],subset[<span class="dv">1</span>],subset[<span class="dv">2</span>],subset[<span class="dv">3</span>],subset[<span class="dv">4</span>]]]</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(subset)<span class="op">==</span><span class="dv">6</span>:</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>        df_sub<span class="op">=</span>df[[subset[<span class="dv">0</span>],subset[<span class="dv">1</span>],subset[<span class="dv">2</span>],subset[<span class="dv">3</span>],subset[<span class="dv">4</span>],subset[<span class="dv">5</span>]]]</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(subset)<span class="op">==</span><span class="dv">7</span>:</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>        df_sub<span class="op">=</span>df[[subset[<span class="dv">0</span>],subset[<span class="dv">1</span>],subset[<span class="dv">2</span>],subset[<span class="dv">3</span>],subset[<span class="dv">4</span>],subset[<span class="dv">5</span>],subset[<span class="dv">6</span>]]]</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(subset)<span class="op">==</span><span class="dv">8</span>:</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>        df_sub<span class="op">=</span>df[[subset[<span class="dv">0</span>],subset[<span class="dv">1</span>],subset[<span class="dv">2</span>],subset[<span class="dv">3</span>],subset[<span class="dv">4</span>],subset[<span class="dv">5</span>],subset[<span class="dv">6</span>],subset[<span class="dv">7</span>]]]</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(subset)<span class="op">&gt;</span><span class="dv">0</span>:</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>        xx_corr<span class="op">=</span>mean_xx_corr(df_sub)</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>        xy_corr<span class="op">=</span>compute_mean_xy_corr(df_sub, label)</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>        k<span class="op">=</span><span class="bu">len</span>(subset)</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>        merit_score_numer <span class="op">=</span> k <span class="op">*</span> np.absolute(xy_corr)</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>        merit_score_denom <span class="op">=</span> np.sqrt(k <span class="op">+</span> k <span class="op">*</span> (k <span class="op">+</span> <span class="dv">1</span>) <span class="op">*</span> np.absolute(xx_corr))</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>        merit_score_s2 <span class="op">=</span> merit_score_numer <span class="op">/</span> merit_score_denom</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(subset)<span class="op">==</span><span class="dv">0</span>:</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>        merit_score_s2<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> merit_score_s2 <span class="op">&gt;</span> best_merit_score:</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>        best_merit_score<span class="op">=</span>merit_score_s2</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>        best_subset<span class="op">=</span>subset</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-execution_count="8">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"The best subset is: "</span>,best_subset,<span class="st">"which has a merit score of"</span>,best_merit_score)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>The best subset is:  ('corsiPercentage', 'giveawaysFor', 'hitsFor') which has a merit score of 0.4721158842275389</code></pre>
+</div>
+</div>
+<p>The best subset based on the merit score was a subset with the three features corsiPercentage, giveawaysFor, and hitsFor. Using this subset, I trained a new Naive Bayes model using only these three features.</p>
+<div class="cell" data-execution_count="9">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> feature_matrix[[<span class="st">"corsiPercentage"</span>,<span class="st">"hitsFor"</span>,<span class="st">"giveawaysFor"</span>]]</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>y<span class="op">=</span> label</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    X, y,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    test_size<span class="op">=</span><span class="fl">0.2</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">100</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>model2<span class="op">=</span>GaussianNB()</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>model2.fit(X_train, y_train)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>y_pred<span class="op">=</span>model2.predict(X_test)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>accuracy<span class="op">=</span>accuracy_score(y_pred, y_test)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> f1_score(y_pred, y_test, average<span class="op">=</span><span class="st">"weighted"</span>)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Accuracy score:"</span>,accuracy)</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"F1 score:"</span>,f1)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Precision:"</span>, sklearn.metrics.precision_score(y_pred,y_test))</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>cm<span class="op">=</span>confusion_matrix(y_test, y_pred)</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>disp<span class="op">=</span>ConfusionMatrixDisplay(confusion_matrix<span class="op">=</span>cm, display_labels<span class="op">=</span>[<span class="st">"Non-playoff team"</span>,<span class="st">"Playoff team"</span>])</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>disp.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Accuracy score: 0.7307692307692307
+F1 score: 0.7287014061207611
+Precision: 0.75</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x13feb0160&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="naive_bayes_files/figure-html/cell-10-output-3.png" width="603" height="434"></p>
+</div>
+</div>
+<p>Using the best subset determined from the feature selection process did result in lower accuracy, precision, and f1 score than the model that used all eight features. Based on a comparison of the confusion matrices from the two models, the difference in accuracy appears to come from the model with fewer features assigning an inaccurate Non-playoff team label to two additional true Playoff teams. The difference is very minimal between these two so the computational efficiency of using three features instead of eight means the model with feature selection is likely better because it will also be less prone to overfitting if employed on a larger dataset.</p>
+</section>
+</section>
+<section id="naive-bayes-model-using-regular-play-data" class="level2">
+<h2 class="anchored" data-anchor-id="naive-bayes-model-using-regular-play-data">Naive Bayes Model Using Regular Play Data</h2>
+<p>After evaluating a Naive Bayes model based only on power play data, I want to test my hypothesis that metrics from playoff minutes can be more predictive of regular season success than metrics from regular play minutes by comparing the accuracy of a model based on regular play data.</p>
+<section id="prepare-regular-play-data-for-naive-bayes" class="level3">
+<h3 class="anchored" data-anchor-id="prepare-regular-play-data-for-naive-bayes">Prepare Regular Play Data for Naive Bayes</h3>
+<p>Using the cleaned data set “team_regular_data_clean.csv” I followed the same process for preparing the data for the Naive Bayes model as detailed above with the power play data.</p>
+<div class="cell" data-execution_count="10">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>df<span class="op">=</span>pd.read_csv(<span class="st">"../data/01-modified-data/team_regular_data_clean.csv"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>label <span class="op">=</span> df[<span class="st">'playoff'</span>].copy()</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>df<span class="op">=</span>df.drop(columns<span class="op">=</span>[<span class="st">'Unnamed: 0'</span>,<span class="st">'playoff'</span>])</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>features<span class="op">=</span>df.columns</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>feature_matrix <span class="op">=</span> df[features].copy()</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> feature_matrix</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>y<span class="op">=</span> label</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    X, y,</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    test_size<span class="op">=</span><span class="fl">0.2</span>,</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">100</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="naive-bayes-1" class="level3">
+<h3 class="anchored" data-anchor-id="naive-bayes-1">Naive Bayes</h3>
+<p>Using the prepared and split data from above, I trained a Naive Bayes model on regular play data with all eight features and calculated accuracy, precision, and f1 scores and constructed a confusion matrix.</p>
+<div class="cell" data-execution_count="11">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>model<span class="op">=</span>GaussianNB()</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>model.fit(X_train, y_train)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>y_pred<span class="op">=</span>model.predict(X_test)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>accuracy<span class="op">=</span>accuracy_score(y_pred, y_test)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> f1_score(y_pred, y_test, average<span class="op">=</span><span class="st">"weighted"</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Accuracy score:"</span>,accuracy)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"F1 score:"</span>,f1)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Precision:"</span>, sklearn.metrics.precision_score(y_pred,y_test))</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>cm<span class="op">=</span>confusion_matrix(y_test, y_pred)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>disp<span class="op">=</span>ConfusionMatrixDisplay(confusion_matrix<span class="op">=</span>cm, display_labels<span class="op">=</span>[<span class="st">"Non-playoff team"</span>,<span class="st">"Playoff team"</span>])</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>disp.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Accuracy score: 0.7307692307692307
+F1 score: 0.7287749287749288
+Precision: 0.625</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x168036ac0&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="naive_bayes_files/figure-html/cell-12-output-3.png" width="603" height="434"></p>
+</div>
+</div>
+<p>The accuracy and precision scores for this model are very similar to the accuracy and precision scores for the model with feature selection on power play data, but the precision score is lower than the precision score for either power play based models.</p>
+</section>
+<section id="feature-selection-1" class="level3">
+<h3 class="anchored" data-anchor-id="feature-selection-1">Feature Selection</h3>
+<p>For a full comparison between regular data and power play data, I will now apply the same feature selection process to regular play data and train a model on the ideal subset of regular play data.</p>
+<div class="cell" data-execution_count="12">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#list all possible feature subsets</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>feature_subsets <span class="op">=</span> <span class="bu">list</span>(features)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>feature_subset<span class="op">=</span>chain.from_iterable(combinations(feature_subsets,r) <span class="cf">for</span> r <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(feature_subsets)<span class="op">+</span><span class="dv">1</span>))</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>feature_subset<span class="op">=</span><span class="bu">list</span>(feature_subset)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>best_subset<span class="op">=</span>np.NaN</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>best_merit_score<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(feature_subset)):</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    subset<span class="op">=</span>feature_subset[i]</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(subset)<span class="op">==</span><span class="dv">1</span>:</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>        df_sub<span class="op">=</span>df[[subset[<span class="dv">0</span>]]]</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(subset)<span class="op">==</span><span class="dv">2</span>:</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>        df_sub<span class="op">=</span>df[[subset[<span class="dv">0</span>],subset[<span class="dv">1</span>]]]</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(subset)<span class="op">==</span><span class="dv">3</span>:</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>        df_sub<span class="op">=</span>df[[subset[<span class="dv">0</span>],subset[<span class="dv">1</span>],subset[<span class="dv">2</span>]]]</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(subset)<span class="op">==</span><span class="dv">4</span>:</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>        df_sub<span class="op">=</span>df[[subset[<span class="dv">0</span>],subset[<span class="dv">1</span>],subset[<span class="dv">2</span>],subset[<span class="dv">3</span>]]]</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(subset)<span class="op">==</span><span class="dv">5</span>:</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>        df_sub<span class="op">=</span>df[[subset[<span class="dv">0</span>],subset[<span class="dv">1</span>],subset[<span class="dv">2</span>],subset[<span class="dv">3</span>],subset[<span class="dv">4</span>]]]</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(subset)<span class="op">==</span><span class="dv">6</span>:</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>        df_sub<span class="op">=</span>df[[subset[<span class="dv">0</span>],subset[<span class="dv">1</span>],subset[<span class="dv">2</span>],subset[<span class="dv">3</span>],subset[<span class="dv">4</span>],subset[<span class="dv">5</span>]]]</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(subset)<span class="op">==</span><span class="dv">7</span>:</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>        df_sub<span class="op">=</span>df[[subset[<span class="dv">0</span>],subset[<span class="dv">1</span>],subset[<span class="dv">2</span>],subset[<span class="dv">3</span>],subset[<span class="dv">4</span>],subset[<span class="dv">5</span>],subset[<span class="dv">6</span>]]]</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(subset)<span class="op">==</span><span class="dv">8</span>:</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>        df_sub<span class="op">=</span>df[[subset[<span class="dv">0</span>],subset[<span class="dv">1</span>],subset[<span class="dv">2</span>],subset[<span class="dv">3</span>],subset[<span class="dv">4</span>],subset[<span class="dv">5</span>],subset[<span class="dv">6</span>],subset[<span class="dv">7</span>]]]</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(subset)<span class="op">&gt;</span><span class="dv">0</span>:</span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>        xx_corr<span class="op">=</span>mean_xx_corr(df_sub)</span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>        xy_corr<span class="op">=</span>compute_mean_xy_corr(df_sub, label)</span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>        k<span class="op">=</span><span class="bu">len</span>(subset)</span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>        merit_score_numer <span class="op">=</span> k <span class="op">*</span> np.absolute(xy_corr)</span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>        merit_score_denom <span class="op">=</span> np.sqrt(k <span class="op">+</span> k <span class="op">*</span> (k <span class="op">+</span> <span class="dv">1</span>) <span class="op">*</span> np.absolute(xx_corr))</span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>        merit_score_s2 <span class="op">=</span> merit_score_numer <span class="op">/</span> merit_score_denom</span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> merit_score_s2 <span class="op">&gt;</span> best_merit_score:</span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a>        best_merit_score<span class="op">=</span>merit_score_s2</span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a>        best_subset<span class="op">=</span>subset</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-execution_count="13">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"The best subset is: "</span>,best_subset,<span class="st">"which has a merit score of"</span>,best_merit_score)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>The best subset is:  ('xGoalsPercentage', 'corsiPercentage', 'goalsFor', 'giveawaysFor', 'hitsFor') which has a merit score of 0.3988440207335123</code></pre>
+</div>
+</div>
+<p>The best subset features for regular play data is expected goals percentage, Corsi percentage, goals for, giveaways for, and hits for. This includes all the features from the power play subset in addition to expected goals percentage and goalsFor. The increase in features for regular data may indicate that less data is needed from power play play to make an equally accurate prediction on regular season success for a team.</p>
+</section>
+<section id="naive-bayes-after-feature-selection" class="level3">
+<h3 class="anchored" data-anchor-id="naive-bayes-after-feature-selection">Naive Bayes After Feature Selection</h3>
+<p>I trained and tested a model on this subset of features and calculated accuracy score, precision score, and f1 score and constructed a confusion matrix for the test set of the model.</p>
+<div class="cell" data-execution_count="14">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> feature_matrix[[<span class="st">"xGoalsPercentage"</span>,<span class="st">"goalsFor"</span>,<span class="st">"corsiPercentage"</span>,<span class="st">"hitsFor"</span>,<span class="st">"giveawaysFor"</span>]]</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>y<span class="op">=</span> label</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    X, y,</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    test_size<span class="op">=</span><span class="fl">0.2</span>,</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">100</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>model2<span class="op">=</span>GaussianNB()</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>model2.fit(X_train, y_train)</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>y_pred<span class="op">=</span>model2.predict(X_test)</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>accuracy<span class="op">=</span>accuracy_score(y_pred, y_test)</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> f1_score(y_pred, y_test, average<span class="op">=</span><span class="st">"weighted"</span>)</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Accuracy score:"</span>,accuracy)</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"F1 score:"</span>,f1)</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Precision:"</span>, sklearn.metrics.precision_score(y_pred,y_test))</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>cm<span class="op">=</span>confusion_matrix(y_test, y_pred)</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>disp<span class="op">=</span>ConfusionMatrixDisplay(confusion_matrix<span class="op">=</span>cm, display_labels<span class="op">=</span>[<span class="st">"Non-playoff team"</span>,<span class="st">"Playoff team"</span>])</span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>disp.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Accuracy score: 0.7692307692307693
+F1 score: 0.7692307692307693
+Precision: 0.625</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x13ff298e0&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="naive_bayes_files/figure-html/cell-15-output-3.png" width="603" height="434"></p>
+</div>
+</div>
+<p>The regular play model with feature selection has slightly higher accuracy and f1 scores than the power play model with feature selection, but not higher than the power play model with all features used. Howevery, the precision score is quite a bit lower than both power play data models. This model seems to be good at classifying non-playoff teams, but has a lower success rate with identifying teams that do qualify for the playoffs.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

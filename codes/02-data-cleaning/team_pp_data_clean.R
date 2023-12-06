@@ -13,10 +13,10 @@ sum(is.na(data2018))
 
 
 #remove unnecessary columns and change column names
-data2022 <- subset(data2022, select=c(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,xGoalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))
-data2021 <- subset(data2021, select=c(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,xGoalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))
-data2020 <- subset(data2020, select=c(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,xGoalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))
-data2018 <- subset(data2018, select=c(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,xGoalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))
+data2022 <- subset(data2022, select=c(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,goalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))
+data2021 <- subset(data2021, select=c(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,goalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))
+data2020 <- subset(data2020, select=c(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,goalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))
+data2018 <- subset(data2018, select=c(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,goalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))
 
 #filter non powerplay data
 data2022<- data2022 %>% filter(situation=="5on4")
@@ -35,10 +35,10 @@ data2021$playoff <- NA
 data2020$playoff <- NA
 data2018$playoff <- NA
 
-data2022<-data2022 %>% mutate(playoff = ifelse(team %in% playoff_teams_2022,"Y","N"))
-data2021<-data2021 %>% mutate(playoff = ifelse(team %in% playoff_teams_2021,"Y","N"))
-data2020<-data2020 %>% mutate(playoff = ifelse(team %in% playoff_teams_2020,"Y","N"))
-data2018<-data2018 %>% mutate(playoff = ifelse(team %in% playoff_teams_2018,"Y","N"))
+data2022<-data2022 %>% mutate(playoff = ifelse(team %in% playoff_teams_2022,1,0))
+data2021<-data2021 %>% mutate(playoff = ifelse(team %in% playoff_teams_2021,1,0))
+data2020<-data2020 %>% mutate(playoff = ifelse(team %in% playoff_teams_2020,1,0))
+data2018<-data2018 %>% mutate(playoff = ifelse(team %in% playoff_teams_2018,1,0))
 
 
 
@@ -49,7 +49,8 @@ data <- rbind(data2022, data2021, data2020, data2018)
 data <- subset(data, select=-c(team,situation,team.1,situation.1))
 
 #normalize numerical data
-data<-mutate(data, xGoalsPercentage=xGoalsPercentage/mean(xGoalsPercentage), corsiPercentage=corsiPercentage/mean(corsiPercentage), shotAttemptsFor=shotAttemptsFor/mean(shotAttemptsFor), xGoalsFor=xGoalsFor/mean(xGoalsFor), faceOffsWonFor=faceOffsWonFor/mean(faceOffsWonFor), takeawaysFor=takeawaysFor/mean(takeawaysFor),giveawaysFor=giveawaysFor/mean(giveawaysFor),hitsFor=hitsFor/mean(hitsFor))
+data<-mutate(data, xGoalsPercentage=xGoalsPercentage/mean(xGoalsPercentage), corsiPercentage=corsiPercentage/mean(corsiPercentage), shotAttemptsFor=shotAttemptsFor/mean(shotAttemptsFor), goalsFor=goalsFor/mean(goalsFor), faceOffsWonFor=faceOffsWonFor/mean(faceOffsWonFor), takeawaysFor=takeawaysFor/mean(takeawaysFor),giveawaysFor=giveawaysFor/mean(giveawaysFor),hitsFor=hitsFor/mean(hitsFor))
 
 #save cleaned data
 write.csv(data, "../../data/01-modified-data/team_pp_data_clean.csv")
+

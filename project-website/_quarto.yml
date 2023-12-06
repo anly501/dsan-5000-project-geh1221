@@ -2,7 +2,7 @@ project:
   type: website
 
 website:
-  title: "DSAN 5000 Portfolio Project"
+  title: "An Analysis of Power Plays in the NHL"
   navbar:
     left:
       - href: index.qmd
@@ -15,20 +15,18 @@ website:
         text: Introduction
       - href: data-gathering.ipynb
         text: Data Gathering
-      - href: data-cleaning.ipynb
+      - href: data-cleaning.html
         text: Data Cleaning
       - href: exploratory_data_analysis.qmd
         text: Data Exploration
-      - href: naive_bayes.ipynb
+      - href: naive_bayes.html
         text: Naive Bayes
       - href: Clustering.html
         text: Clustering
       - href: dimensionality-reduction.html
         text: Dimensionality Reduction
-      - href: decision-trees.ipynb
+      - href: decision-trees.html
         text: Decision Trees
-      - href: arm.ipynb
-        text: ARM
       - href: conclusions.ipynb
         text: Conclusions
 

@@ -1,18 +1,23 @@
 ---
 title: "Exploratory Data Analysis"
 author: "Grace Hyland"
-format: html
+format:
+  html:
+    code-fold: true
 editor: visual
 ---
 
 ## Summary Statistics
 
+To begin exploring the central question of how power play play relates to the success of a hockey team in the NHL, I looked at data on different metrics for each player in the 2022 season. For each player the value of each evaluation metric is separated into a metric for the time played regular 5 on 5, a metric for the time played on a power play, a metric for the time played on a penalty kill, and a metric for the time played in situations that do not fit into any of these categories. The data used only contained players that reached a certain threshold for total playing time as explained in the Data Cleaning tab. The data was separated into power play and regular play data frames so that the regular play data set includes the value of each metric for every player during regular play and the power play data set includes the value of each metric for every player during power play minutes.
+
 ```{r}
 library(tidyverse)
 regular_data <- read.csv("../data/01-modified-data/skaters_clean.csv")
 pp_data <- read.csv("../data/01-modified-data/skaters_pp.csv")
-pk_data <- read.csv("../data/01-modified-data/skaters_pk.csv")
 ```
+
+After importing the datasets, I selected nine variables (expectedGoals, Corsi, shotAttempts, points, goals, faceoffsWon, takeaways, giveaways, and hits) to look at summary statistics for. I chose these seven variables because they are different from each other and correspond to noticeable moments on the ice. I first looked at summary statistics for regular play which can be seen below.
 
 ```{r}
 summary_data_regular <- regular_data %>%
@@ -21,13 +26,19 @@ summary_data_regular <- regular_data %>%
 summary_data_regular
 ```
 
+Before creating summary statistics for the power play data I found the distribution of ice time minutes and removed players who were in the bottom 25% of players by icetime during power plays.
+
 ```{r}
 summary(pp_data$icetime)
 
 #remove bottom 25% of players by ice time
 pp_data <- pp_data %>%
   filter(icetime > 414)
+```
 
+Typically, a team will have two set power play units (totaling 10 players) that play the entire power play so I sought to exclude players who may have played a couple of shifts throughout the season but were not part of the main power play strategy.
+
+```{r}
 #summarize all metrics
 summary_data_pp <- pp_data %>%
   subset(select=c(expectedGoals,corsi,shotAttempts,points,goals,faceoffsWon,takeways,giveaways,hits)) %>%
@@ -35,21 +46,13 @@ summary_data_pp <- pp_data %>%
 summary_data_pp
 ```
 
-```{r}
-summary(pk_data$icetime)
+### Power play and Regular Play Summary Comparison
 
-#remove bottom 25% of players by ice time
-pk_data <- pk_data %>%
-  filter(icetime > 555)
-
-#summarize all metrics
-summary_data_pk <- pk_data %>%
-  subset(select=c(expectedGoals,corsi,shotAttempts,points,goals,faceoffsWon,takeways,giveaways,hits)) %>%
-  summary()
-summary_data_pk
-```
+All seven of the variable that we are looking at in this analysis (expected goals, Corsi, shot attempts, points, goals, face offs won, takeaways, giveaways, and hits) have the distribution of values skewed higher when looking at data from power play minutes. This is an intuitive and expected result for many of the metrics related to taking shots because having a one man advantage does mean teams on power plays are more offensively motivated and focused. This is more surprising for the variables like takeaways, giveaways, and hits which are not explicitly offensive stats. The increase in value for these variables implies that there may be more action (and essentially more hockey) occurring during power play minutes than during other minutes during a game.
 
 ## Normalization of Data
+
+The seven variables we are looking at all have different scales with some metrics using values between 0 and 1 to represent percentages (like Corsi) and other variables simply being a count of occurrences (like hits and takeaways). To better compare the variables to each other and to regular season success, I normalized all of the variables by dividing each value by the mean so that they are on the same scale.
 
 ```{r}
 
@@ -57,30 +60,31 @@ norm_regular_data<-mutate(regular_data, expectedGoals=expectedGoals/mean(expecte
 
 norm_pp_data<-mutate(pp_data, expectedGoals=expectedGoals/mean(expectedGoals), corsi=corsi/mean(corsi), shotAttempts=shotAttempts/mean(shotAttempts), points=points/mean(points), goals=goals/mean(goals), faceoffsWon=faceoffsWon/mean(faceoffsWon),takeways=takeways/mean(takeways),giveaways=giveaways/mean(giveaways),hits=hits/mean(hits))
  
-norm_pk_data<-mutate(pk_data, expectedGoals=expectedGoals/mean(expectedGoals), corsi=corsi/mean(corsi), shotAttempts=shotAttempts/mean(shotAttempts), points=points/mean(points), goals=goals/mean(goals), faceoffsWon=faceoffsWon/mean(faceoffsWon),takeways=takeways/mean(takeways),giveaways=giveaways/mean(giveaways),hits=hits/mean(hits))
 ```
 
 ## Check for Outliers
 
+The last step of data processing before looking at some visualizations to understand the data is checking for outliers.
+
 ```{r}
 norm_regular_data<-norm_regular_data %>%
   subset(select=c(ID, name, team, expectedGoals,corsi,shotAttempts,points,goals,faceoffsWon,takeways,giveaways,hits))
-sapply(norm_regular_data, function(x) sum(x > 3)) #faceoffs won has a lot of outliers
+sapply(norm_regular_data, function(x) sum(x > 3)) 
+#faceoffs won has a lot of outliers
 
 ```
+
+For regular play data, most variables had fewer than 10 outliers out of 615 observations, but faceoffsWon has 95 observations that fall outside of 3 standard deviations from the mean. There were no extreme values that seemed impossible in the original dataset, so the outliers are not likely to be from a case of measuring and recording incorrectly so I did not decide to remove or replace them.
 
 ```{r}
 norm_pp_data<-norm_pp_data %>%
   subset(select=c(ID, name, team, expectedGoals,corsi,shotAttempts,points,goals,faceoffsWon,takeways,giveaways,hits))
-sapply(norm_pp_data, function(x) sum(x > 3))  #most metrics have larger number of outliers for powerplays than regular play
+sapply(norm_pp_data, function(x) sum(x > 3))  
+#most metrics have larger number of outliers for powerplays than regular play
 
 ```
 
-```{r}
-norm_pk_data<-norm_pk_data %>%
-  subset(select=c(ID, name, team, expectedGoals,corsi,shotAttempts,points,goals,faceoffsWon,takeways,giveaways,hits))
-sapply(norm_pk_data, function(x) sum(x > 3))  #most metrics have larger number of outliers for penalty kills than regular play
-```
+For power play data, the number of outliers in most variables is higher than for the corresponding variable in the regular play data. This indicates that there are more extremes during power plays than during regular play. Again, I did not remove or replace outliers because they do not seem to be recording errors and may be informative for answering questions.
 
 ## Compare Regular Play and Powerplays
 
@@ -94,67 +98,49 @@ df.1 <- left_join(norm_pp_data, norm_regular_data, by="ID")
 #compare metric values between regular play and powerplays for all players
 
 library(ggplot2)
+library(gridExtra)
 
-ggplot(data=df.1) + geom_point(aes(x=expectedGoals, y=expectedGoals_pp))
+g1<-ggplot(data=df.1) + geom_point(aes(x=expectedGoals, y=expectedGoals_pp), color="purple") + theme_bw() + labs(title="Expected Goals Percentage", x="Regular Play", y="Power Play")
 
-ggplot(data=df.1) + geom_point(aes(x=corsi, y=corsi_pp))
+g2<-ggplot(data=df.1) + geom_point(aes(x=corsi, y=corsi_pp), color="purple") + theme_bw() + labs(title="Corsi Percentage", x="Regular Play", y="Power Play")
 
-ggplot(data=df.1) + geom_point(aes(x=shotAttempts, y= shotAttempts_pp))
+g3<-ggplot(data=df.1) + geom_point(aes(x=shotAttempts, y= shotAttempts_pp), color="purple") + theme_bw() + labs(title="Shot Attempts", x="Regular Play", y="Power Play")
 
-ggplot(data=df.1) + geom_point(aes(x=points, y=points_pp))
+g4<-ggplot(data=df.1) + geom_point(aes(x=points, y=points_pp), color="purple") + theme_bw() + labs(title="Points", x="Regular Play", y="Power Play")
 
-ggplot(data=df.1) + geom_point(aes(x=goals, y=goals_pp))
+g5<-ggplot(data=df.1) + geom_point(aes(x=goals, y=goals_pp), color="purple") + theme_bw() + labs(title="Goals", x="Regular Play", y="Power Play")
 
-ggplot(data=df.1) + geom_point(aes(x=faceoffsWon, y=faceoffsWon_pp))
+g6<-ggplot(data=df.1) + geom_point(aes(x=faceoffsWon, y=faceoffsWon_pp), color="purple") + theme_bw() + labs(title="Faceoffs Won", x="Regular Play", y="Power Play")
 
-ggplot(data=df.1) + geom_point(aes(x=takeways, y=takeaways_pp))
+g7<-ggplot(data=df.1) + geom_point(aes(x=takeways, y=takeaways_pp), color="purple") + theme_bw() + labs(title="Takeaways", x="Regular Play", y="Power Play")
 
-ggplot(data=df.1) + geom_point(aes(x=giveaways, y=giveaways_pp))
+g8<-ggplot(data=df.1) + geom_point(aes(x=giveaways, y=giveaways_pp), color="purple") + theme_bw() + labs(title="Giveaways", x="Regular Play", y="Power Play")
 
-ggplot(data=df.1) + geom_point(aes(x=hits, y=hits_pp))
+g9<-ggplot(data=df.1) + geom_point(aes(x=hits, y=hits_pp), color="purple") + theme_bw() + labs(title="Hits", x="Regular Play", y="Power Play")
+
+grid.arrange(g1,g2,g3,g4,g5,g6,g7,g8,g9, ncol=3)
 ```
 
-## Compare Regular Play and Penalty Kills
+Looking at the scatterplots for each variable it seems that some of the metrics are relatively correlated between the power play data and the regular play data. The variables that seem the most linearly correlated are shot attempts, points, and goals. Shot attempts, points and goals are some of the earliest recorded metrics in ice hockey and are very easy for a casual viewer to track and understand. The more advanced metrics such as Corsi and Expected goals percent and less commonly tracked metrics such as hits and takeaways seem to be less correlated between power play minutes and regular minutes for the same players.
+
+### Heat map of Correlation between Variable
 
 ```{r}
-#join pk data with regular data
-colnames(norm_pk_data) <- c("ID","name","team","expectedGoals_pk","corsi_pk","shotAttempts_pk","points_pk","goals_pk","faceoffsWon_pk","takeaways_pk","giveaways_pk","hits_pk")
-df.2 <- left_join(norm_pk_data, norm_regular_data, by="ID")
+library(reshape2)
+ 
+df.2 <- subset(df.1, select=-c(ID, name.x, team.x,name.y,team.y))
+corr_matrix <- round(cor(df.2),2)
+corr_matrix <- melt(corr_matrix)
+
+
+ggplot(data = corr_matrix, aes(x=Var1, y=Var2, fill=value)) + geom_tile() + theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1))
 ```
 
-```{r}
-#compare metric values between regular play and penalty kills for all players
+The heatmap of correlation indexes between each of the variables show that faceoffs won in regular play and faceoffs won in power plays are fairly strongly correlated, however a lot of the other metrics have a much lower correlation values like expected goals and Corsi.
 
-library(ggplot2)
+## Compare Power play Success to Team Record
 
-ggplot(data=df.2) + geom_point(aes(x=expectedGoals, y=expectedGoals_pk))
-
-ggplot(data=df.2) + geom_point(aes(x=corsi, y=corsi_pk))
-
-ggplot(data=df.2) + geom_point(aes(x=shotAttempts, y= shotAttempts_pk))
-
-ggplot(data=df.2) + geom_point(aes(x=points, y=points_pk))
-
-ggplot(data=df.2) + geom_point(aes(x=goals, y=goals_pk))
-
-ggplot(data=df.2) + geom_point(aes(x=faceoffsWon, y=faceoffsWon_pk))
-
-ggplot(data=df.2) + geom_point(aes(x=takeways, y=takeaways_pk))
-
-ggplot(data=df.2) + geom_point(aes(x=giveaways, y=giveaways_pk))
-
-ggplot(data=df.2) + geom_point(aes(x=hits, y=hits_pk))
-```
-
-## Compare Powerplay and Penalty Kill Success to Team Record
-
--   Find powerplay and penalty kill success rates for all teams in 2022 season
-
--   Find data with points record for all teams in 2022 season
-
--   Add variable for each team that indicates whether they made the playoffs
-
--   Find correlation between pp and pk success and team record
+Now that I have determined which variables are the most correlated for players between their time playing in regular play and their time playing during power plays, I want to evaluate just how important success on a power play is for a team. To do this I will be comparing success rate on power plays (which is defined as the percentage of team power plays which result in a goal) and the team's record for the season. In the NHL, a teams standings within the league are determined by a value called points. Teams get 2 points for every game won in regulation or overtime/shootouts, 1 point for games lost in overtime/shootouts, and 0 points for games lost in regulation. To compare power play success to record, I am looking at a plot of team points against power play success rate.
 
 ```{r}
 #load team data and team record data
@@ -164,10 +150,22 @@ team_data <- read.csv("../data/01-modified-data/team_record_clean.csv")
 
 ```{r}
 #compare powerplay success to overall season success
-ggplot(data=team_data) + geom_point(aes(x=ppPercent, y=points))
-ggplot(data=team_data) + geom_point(aes(x=ppGoals, y=points))
+ggplot(data=team_data) + geom_point(aes(x=ppPercent, y=points), color="purple") + theme_bw() + labs(title="Regular Season Success Based on Power Play Success", x="Power Play Percent", y="Team Points")
 
-#compare penalty kill success to overall season success
-ggplot(data=team_data) + geom_point(aes(x=pkPercent, y=points))
-ggplot(data=team_data) + geom_point(aes(x=pkGoalsAgainst, y=points))
+
 ```
+
+There appears to be a fairly significant correlation between power play success percentage and regular season team success. This highlights the importance of having strong players with strong metrics on the power play for a team to have success.
+
+In addition to power play success, I compared the pure number of goals a team scores on the power play to their regular season team points. Using number of goals on power plays also accounts for the number of playoff opportunities a team gets throughout the season.
+
+```{r}
+ggplot(data=team_data) + geom_point(aes(x=ppGoals, y=points), color="purple") + theme_bw() + labs(title="Regular Season Success Based on Power Play Goals", x="Power Play Goals", y="Team Points")
+
+```
+
+The scatter plot comparing regular season team points to number of goals scored on power plays is very similar to the above scatter plot of power play success percentage and regular season team success. This further emphasizes the importance of a strong power play for overall team success.
+
+## Conclusions and Hypothesis
+
+Based on the exploration of this data, we can conclude that power play success (in several different metrics) does relate to team success so evaluating teams success and quality during power plays should reveal predictors for regular season success. Additionally we learned that players don't necessarily have equally strong metrics in regular play and power play minutes. Combining these two results, I am hypothesizing that using metrics from power play data can provide different results when predicting the level of success a team will have at the conclusion of the regular season.

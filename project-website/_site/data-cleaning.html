@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Grace Hyland">
+
+<title>DSAN 5000 Portfolio Project - Data Cleaning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">DSAN 5000 Portfolio Project</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html" rel="" target="">
+ <span class="menu-text">About Me</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/anly501/dsan-5000-project-geh1221" rel="" target="">
+ <span class="menu-text">Code</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/anly501/dsan-5000-project-geh1221" rel="" target="">
+ <span class="menu-text">Data</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./introduction.html" rel="" target="">
+ <span class="menu-text">Introduction</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./data-gathering.html" rel="" target="">
+ <span class="menu-text">Data Gathering</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./data-cleaning.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Data Cleaning</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./exploratory_data_analysis.html" rel="" target="">
+ <span class="menu-text">Data Exploration</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./naive_bayes.html" rel="" target="">
+ <span class="menu-text">Naive Bayes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Clustering.html" rel="" target="">
+ <span class="menu-text">Clustering</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./dimensionality-reduction.html" rel="" target="">
+ <span class="menu-text">Dimensionality Reduction</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./decision-trees.html" rel="" target="">
+ <span class="menu-text">Decision Trees</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./conclusions.ipynb" rel="" target="">
+ <span class="menu-text">Conclusions</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#player-data-cleaning" id="toc-player-data-cleaning" class="nav-link active" data-scroll-target="#player-data-cleaning">Player Data Cleaning</a></li>
+  <li><a href="#team-record-data" id="toc-team-record-data" class="nav-link" data-scroll-target="#team-record-data">Team Record Data</a></li>
+  <li><a href="#team-power-play-and-regular-play-data" id="toc-team-power-play-and-regular-play-data" class="nav-link" data-scroll-target="#team-power-play-and-regular-play-data">Team Power Play and Regular Play Data</a>
+  <ul class="collapse">
+  <li><a href="#power-play-data" id="toc-power-play-data" class="nav-link" data-scroll-target="#power-play-data">Power Play Data</a></li>
+  <li><a href="#regular-play-data" id="toc-regular-play-data" class="nav-link" data-scroll-target="#regular-play-data">Regular Play Data</a></li>
+  </ul></li>
+  <li><a href="#team-power-play-data-with-point-brackets" id="toc-team-power-play-data-with-point-brackets" class="nav-link" data-scroll-target="#team-power-play-data-with-point-brackets">Team Power Play Data with Point Brackets</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Data Cleaning</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Grace Hyland </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="player-data-cleaning" class="level2">
+<h2 class="anchored" data-anchor-id="player-data-cleaning">Player Data Cleaning</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load data</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.2     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.2     ✔ tibble    3.2.1
+✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../data/00-raw-data/skaters.csv"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#check for missing values</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#remove unnecessary columns and rename columns</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, <span class="at">select=</span><span class="fu">c</span>(playerId,season,name,team,position,situation,games_played,icetime,shifts,iceTimeRank,onIce_xGoalsPercentage,onIce_corsiPercentage,I_F_shotAttempts,I_F_points,I_F_goals,I_F_faceOffsWon,I_F_takeaways,I_F_giveaways,I_F_hits))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(data) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"ID"</span>,<span class="st">"season"</span>,<span class="st">"name"</span>,<span class="st">"team"</span>,<span class="st">"position"</span>,<span class="st">"situation"</span>,<span class="st">"games_played"</span>,<span class="st">"icetime"</span>,<span class="st">"shifts"</span>,<span class="st">"iceTimeRank"</span>,<span class="st">"expectedGoals"</span>,<span class="st">"corsi"</span>,<span class="st">"shotAttempts"</span>,<span class="st">"points"</span>,<span class="st">"goals"</span>,<span class="st">"faceoffsWon"</span>,<span class="st">"takeways"</span>,<span class="st">"giveaways"</span>,<span class="st">"hits"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#remove players who played in fewer than half of the games in the season</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">filter</span>(data, games_played<span class="sc">&gt;=</span><span class="dv">41</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#separate dataframes for regular play, power plays, and penalty kills</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>regular_player_data <span class="ot">&lt;-</span> <span class="fu">filter</span>(data, situation<span class="sc">==</span><span class="st">"5on5"</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>pp_player_data <span class="ot">&lt;-</span> <span class="fu">filter</span>(data, situation<span class="sc">==</span><span class="st">"5on4"</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#save cleaned data</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(regular_player_data, <span class="st">"../data/01-modified-data/skaters_clean.csv"</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(pp_player_data, <span class="st">"../data/01-modified-data/skaters_pp.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The first data set that I used in this portfolio was the data on players in the 2022-2023 season. I imported the data as a csv file to a data frame in R. The first step I took in the data cleaning process was checking of any missing values. This data set came relatively clean so there were not any missing values.</p>
+<p>The data frame did however start with 154 total columns which is too large for the scope of this project so I selected 19 columns to keep in the data set including identification information and 9 variables that are metrics of how well the player plays. I also had to rename the columns to simpler names.</p>
+<p>The next step I took was removing players who were not regular starters on their teams. This was done by filtering by games played so only players who have played in at least half of the games in the season are included.</p>
+<p>Finally, I separated the data into data on players during power plays and data on players during regular 5 on 5 play and exported these separated data frames to new CSV files.</p>
+</section>
+<section id="team-record-data" class="level2">
+<h2 class="anchored" data-anchor-id="team-record-data">Team Record Data</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load data</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../data/00-raw-data/team_records.csv"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#check for missing values</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#remove unnecessary columns and change column names</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, <span class="at">select=</span><span class="fu">c</span>(X,PTS, PP, PPO, PP., PPA, PPOA, PK.))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(data) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"team"</span>,<span class="st">"points"</span>, <span class="st">"ppGoals"</span>,<span class="st">"ppOpps"</span>,<span class="st">"ppPercent"</span>,<span class="st">"pkGoalsAgainst"</span>,<span class="st">"pkOppsAgainst"</span>,<span class="st">"pkPercent"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#change team names to match other datasets</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>team <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"BOS"</span>,<span class="st">"CAR"</span>,<span class="st">"NJD"</span>,<span class="st">"VGK"</span>,<span class="st">"TOR"</span>,<span class="st">"COL"</span>,<span class="st">"EDM"</span>,<span class="st">"DAL"</span>,<span class="st">"NYR"</span>,<span class="st">"LAK"</span>,<span class="st">"MIN"</span>,<span class="st">"SEA"</span>,<span class="st">"TBL"</span>,<span class="st">"WPG"</span>,<span class="st">"CGY"</span>,<span class="st">"NYI"</span>,<span class="st">"FLA"</span>,<span class="st">"NSH"</span>,<span class="st">"BUF"</span>,<span class="st">"PIT"</span>,<span class="st">"OTT"</span>,<span class="st">"VAN"</span>,<span class="st">"STL"</span>,<span class="st">"WSH"</span>,<span class="st">"DET"</span>,<span class="st">"PHI"</span>,<span class="st">"ARI"</span>,<span class="st">"MTL"</span>,<span class="st">"SJS"</span>,<span class="st">"CHI"</span>,<span class="st">"CBJ"</span>,<span class="st">"ANA"</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#save cleaned data</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(data, <span class="st">"../data/01-modified-data/team_record_clean.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The next data set I use in the portfolio is the team record data. I first imported the CSV of the data set as a data frame in R. I then checked for missing values in the data and there were none.</p>
+<p>After that I selected the columns that will be relevant for my data science questions and renamed the columns. These columns include team name, points, power play goals, power play opportunities, power play percent, penalty kill goals against, penalty opportunities against, and penalty kill percent.</p>
+<p>The team name column did not use the same abbreviations as the team name column in other data sets used in the portfolio so I adjusted the values of the columns to match.</p>
+<p>I then exported the clean data frame to a CSV file.</p>
+</section>
+<section id="team-power-play-and-regular-play-data" class="level2">
+<h2 class="anchored" data-anchor-id="team-power-play-and-regular-play-data">Team Power Play and Regular Play Data</h2>
+<section id="power-play-data" class="level3">
+<h3 class="anchored" data-anchor-id="power-play-data">Power Play Data</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load data</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>data2022 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../data/00-raw-data/team_data_2022.csv"</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>data2021 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../data/00-raw-data/team_data_2021.csv"</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>data2020 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../data/00-raw-data/team_data_2020.csv"</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>data2018 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../data/00-raw-data/team_data_2018.csv"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#check for missing values</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(data2022))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(data2021))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(data2020))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(data2018))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#remove unnecessary columns and change column names</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>data2022 <span class="ot">&lt;-</span> <span class="fu">subset</span>(data2022, <span class="at">select=</span><span class="fu">c</span>(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,goalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>data2021 <span class="ot">&lt;-</span> <span class="fu">subset</span>(data2021, <span class="at">select=</span><span class="fu">c</span>(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,goalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>data2020 <span class="ot">&lt;-</span> <span class="fu">subset</span>(data2020, <span class="at">select=</span><span class="fu">c</span>(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,goalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>data2018 <span class="ot">&lt;-</span> <span class="fu">subset</span>(data2018, <span class="at">select=</span><span class="fu">c</span>(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,goalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co">#filter non powerplay data</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>data2022<span class="ot">&lt;-</span> data2022 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(situation<span class="sc">==</span><span class="st">"5on4"</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>data2021<span class="ot">&lt;-</span> data2021 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(situation<span class="sc">==</span><span class="st">"5on4"</span>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>data2020<span class="ot">&lt;-</span> data2020 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(situation<span class="sc">==</span><span class="st">"5on4"</span>)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>data2018<span class="ot">&lt;-</span> data2018 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(situation<span class="sc">==</span><span class="st">"5on4"</span>)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="co">#add variable for playoff teams</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>playoff_teams_2018 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"T.B"</span>,<span class="st">"BOS"</span>,<span class="st">"TOR"</span>,<span class="st">"WSH"</span>,<span class="st">"NYI"</span>,<span class="st">"PIT"</span>,<span class="st">"CAR"</span>,<span class="st">"CBJ"</span>,<span class="st">"NSH"</span>,<span class="st">"WPG"</span>,<span class="st">"STL"</span>,<span class="st">"DAL"</span>,<span class="st">"COL"</span>,<span class="st">"CGY"</span>,<span class="st">"S.J"</span>,<span class="st">"VGK"</span>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>playoff_teams_2020 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"CAR"</span>,<span class="st">"FLA"</span>,<span class="st">"T.B"</span>,<span class="st">"NSH"</span>,<span class="st">"PIT"</span>,<span class="st">"WSH"</span>,<span class="st">"BOS"</span>,<span class="st">"NYI"</span>,<span class="st">"TOR"</span>,<span class="st">"EDM"</span>,<span class="st">"WPG"</span>,<span class="st">"MTL"</span>,<span class="st">"COL"</span>,<span class="st">"VGK"</span>,<span class="st">"MIN"</span>,<span class="st">"STL"</span>)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>playoff_teams_2021 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"FLA"</span>,<span class="st">"TOR"</span>,<span class="st">"TBL"</span>,<span class="st">"BOS"</span>,<span class="st">"CAR"</span>,<span class="st">"NYR"</span>,<span class="st">"PIT"</span>,<span class="st">"WSH"</span>,<span class="st">"COL"</span>,<span class="st">"MIN"</span>,<span class="st">"STL"</span>,<span class="st">"DAL"</span>,<span class="st">"NSH"</span>,<span class="st">"CGY"</span>,<span class="st">"EDM"</span>,<span class="st">"LAK"</span>)</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>playoff_teams_2022 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"BOS"</span>,<span class="st">"TOR"</span>,<span class="st">"TBL"</span>,<span class="st">"FLA"</span>,<span class="st">"CAR"</span>,<span class="st">"NJD"</span>,<span class="st">"NYR"</span>,<span class="st">"NYI"</span>,<span class="st">"COL"</span>,<span class="st">"DAL"</span>,<span class="st">"MIN"</span>,<span class="st">"WPG"</span>,<span class="st">"VGK"</span>,<span class="st">"EDM"</span>,<span class="st">"LAK"</span>,<span class="st">"SEA"</span>)</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>data2022<span class="sc">$</span>playoff <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>data2021<span class="sc">$</span>playoff <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>data2020<span class="sc">$</span>playoff <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>data2018<span class="sc">$</span>playoff <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>data2022<span class="ot">&lt;-</span>data2022 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">playoff =</span> <span class="fu">ifelse</span>(team <span class="sc">%in%</span> playoff_teams_2022,<span class="dv">1</span>,<span class="dv">0</span>))</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>data2021<span class="ot">&lt;-</span>data2021 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">playoff =</span> <span class="fu">ifelse</span>(team <span class="sc">%in%</span> playoff_teams_2021,<span class="dv">1</span>,<span class="dv">0</span>))</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>data2020<span class="ot">&lt;-</span>data2020 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">playoff =</span> <span class="fu">ifelse</span>(team <span class="sc">%in%</span> playoff_teams_2020,<span class="dv">1</span>,<span class="dv">0</span>))</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>data2018<span class="ot">&lt;-</span>data2018 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">playoff =</span> <span class="fu">ifelse</span>(team <span class="sc">%in%</span> playoff_teams_2018,<span class="dv">1</span>,<span class="dv">0</span>))</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a><span class="co">#combine datasets</span></span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">rbind</span>(data2022, data2021, data2020, data2018)</span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a><span class="co">#remove non-numerical data</span></span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, <span class="at">select=</span><span class="sc">-</span><span class="fu">c</span>(team,situation,team<span class="fl">.1</span>,situation<span class="fl">.1</span>))</span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a><span class="co">#normalize numerical data</span></span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>data<span class="ot">&lt;-</span><span class="fu">mutate</span>(data, <span class="at">xGoalsPercentage=</span>xGoalsPercentage<span class="sc">/</span><span class="fu">mean</span>(xGoalsPercentage), <span class="at">corsiPercentage=</span>corsiPercentage<span class="sc">/</span><span class="fu">mean</span>(corsiPercentage), <span class="at">shotAttemptsFor=</span>shotAttemptsFor<span class="sc">/</span><span class="fu">mean</span>(shotAttemptsFor), <span class="at">goalsFor=</span>goalsFor<span class="sc">/</span><span class="fu">mean</span>(goalsFor), <span class="at">faceOffsWonFor=</span>faceOffsWonFor<span class="sc">/</span><span class="fu">mean</span>(faceOffsWonFor), <span class="at">takeawaysFor=</span>takeawaysFor<span class="sc">/</span><span class="fu">mean</span>(takeawaysFor),<span class="at">giveawaysFor=</span>giveawaysFor<span class="sc">/</span><span class="fu">mean</span>(giveawaysFor),<span class="at">hitsFor=</span>hitsFor<span class="sc">/</span><span class="fu">mean</span>(hitsFor))</span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a><span class="co">#save cleaned data</span></span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(data, <span class="st">"../data/01-modified-data/team_pp_data_clean.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="regular-play-data" class="level3">
+<h3 class="anchored" data-anchor-id="regular-play-data">Regular Play Data</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load data</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>data2022 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../data/00-raw-data/team_data_2022.csv"</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>data2021 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../data/00-raw-data/team_data_2021.csv"</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>data2020 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../data/00-raw-data/team_data_2020.csv"</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>data2018 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../data/00-raw-data/team_data_2018.csv"</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co">#check for missing values</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(data2022))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(data2021))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(data2020))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(data2018))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">#remove unnecessary columns and change column names</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>data2022 <span class="ot">&lt;-</span> <span class="fu">subset</span>(data2022, <span class="at">select=</span><span class="fu">c</span>(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,goalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>data2021 <span class="ot">&lt;-</span> <span class="fu">subset</span>(data2021, <span class="at">select=</span><span class="fu">c</span>(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,goalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>data2020 <span class="ot">&lt;-</span> <span class="fu">subset</span>(data2020, <span class="at">select=</span><span class="fu">c</span>(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,goalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>data2018 <span class="ot">&lt;-</span> <span class="fu">subset</span>(data2018, <span class="at">select=</span><span class="fu">c</span>(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,goalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co">#filter non regular play data</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>data2022<span class="ot">&lt;-</span> data2022 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(situation<span class="sc">==</span><span class="st">"5on5"</span>)</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>data2021<span class="ot">&lt;-</span> data2021 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(situation<span class="sc">==</span><span class="st">"5on5"</span>)</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>data2020<span class="ot">&lt;-</span> data2020 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(situation<span class="sc">==</span><span class="st">"5on5"</span>)</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>data2018<span class="ot">&lt;-</span> data2018 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(situation<span class="sc">==</span><span class="st">"5on5"</span>)</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="co">#add variable for playoff teams</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>playoff_teams_2018 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"T.B"</span>,<span class="st">"BOS"</span>,<span class="st">"TOR"</span>,<span class="st">"WSH"</span>,<span class="st">"NYI"</span>,<span class="st">"PIT"</span>,<span class="st">"CAR"</span>,<span class="st">"CBJ"</span>,<span class="st">"NSH"</span>,<span class="st">"WPG"</span>,<span class="st">"STL"</span>,<span class="st">"DAL"</span>,<span class="st">"COL"</span>,<span class="st">"CGY"</span>,<span class="st">"S.J"</span>,<span class="st">"VGK"</span>)</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>playoff_teams_2020 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"CAR"</span>,<span class="st">"FLA"</span>,<span class="st">"T.B"</span>,<span class="st">"NSH"</span>,<span class="st">"PIT"</span>,<span class="st">"WSH"</span>,<span class="st">"BOS"</span>,<span class="st">"NYI"</span>,<span class="st">"TOR"</span>,<span class="st">"EDM"</span>,<span class="st">"WPG"</span>,<span class="st">"MTL"</span>,<span class="st">"COL"</span>,<span class="st">"VGK"</span>,<span class="st">"MIN"</span>,<span class="st">"STL"</span>)</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>playoff_teams_2021 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"FLA"</span>,<span class="st">"TOR"</span>,<span class="st">"TBL"</span>,<span class="st">"BOS"</span>,<span class="st">"CAR"</span>,<span class="st">"NYR"</span>,<span class="st">"PIT"</span>,<span class="st">"WSH"</span>,<span class="st">"COL"</span>,<span class="st">"MIN"</span>,<span class="st">"STL"</span>,<span class="st">"DAL"</span>,<span class="st">"NSH"</span>,<span class="st">"CGY"</span>,<span class="st">"EDM"</span>,<span class="st">"LAK"</span>)</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>playoff_teams_2022 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"BOS"</span>,<span class="st">"TOR"</span>,<span class="st">"TBL"</span>,<span class="st">"FLA"</span>,<span class="st">"CAR"</span>,<span class="st">"NJD"</span>,<span class="st">"NYR"</span>,<span class="st">"NYI"</span>,<span class="st">"COL"</span>,<span class="st">"DAL"</span>,<span class="st">"MIN"</span>,<span class="st">"WPG"</span>,<span class="st">"VGK"</span>,<span class="st">"EDM"</span>,<span class="st">"LAK"</span>,<span class="st">"SEA"</span>)</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>data2022<span class="sc">$</span>playoff <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>data2021<span class="sc">$</span>playoff <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>data2020<span class="sc">$</span>playoff <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>data2018<span class="sc">$</span>playoff <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>data2022<span class="ot">&lt;-</span>data2022 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">playoff =</span> <span class="fu">ifelse</span>(team <span class="sc">%in%</span> playoff_teams_2022,<span class="dv">1</span>,<span class="dv">0</span>))</span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>data2021<span class="ot">&lt;-</span>data2021 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">playoff =</span> <span class="fu">ifelse</span>(team <span class="sc">%in%</span> playoff_teams_2021,<span class="dv">1</span>,<span class="dv">0</span>))</span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>data2020<span class="ot">&lt;-</span>data2020 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">playoff =</span> <span class="fu">ifelse</span>(team <span class="sc">%in%</span> playoff_teams_2020,<span class="dv">1</span>,<span class="dv">0</span>))</span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>data2018<span class="ot">&lt;-</span>data2018 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">playoff =</span> <span class="fu">ifelse</span>(team <span class="sc">%in%</span> playoff_teams_2018,<span class="dv">1</span>,<span class="dv">0</span>))</span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a><span class="co">#combine datasets</span></span>
+<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">rbind</span>(data2022, data2021, data2020, data2018)</span>
+<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a><span class="co">#remove non-numerical data</span></span>
+<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, <span class="at">select=</span><span class="sc">-</span><span class="fu">c</span>(team,situation,team<span class="fl">.1</span>,situation<span class="fl">.1</span>))</span>
+<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a><span class="co">#normalize numerical data</span></span>
+<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a>data<span class="ot">&lt;-</span><span class="fu">mutate</span>(data, <span class="at">xGoalsPercentage=</span>xGoalsPercentage<span class="sc">/</span><span class="fu">mean</span>(xGoalsPercentage), <span class="at">corsiPercentage=</span>corsiPercentage<span class="sc">/</span><span class="fu">mean</span>(corsiPercentage), <span class="at">shotAttemptsFor=</span>shotAttemptsFor<span class="sc">/</span><span class="fu">mean</span>(shotAttemptsFor), <span class="at">goalsFor=</span>goalsFor<span class="sc">/</span><span class="fu">mean</span>(goalsFor), <span class="at">faceOffsWonFor=</span>faceOffsWonFor<span class="sc">/</span><span class="fu">mean</span>(faceOffsWonFor), <span class="at">takeawaysFor=</span>takeawaysFor<span class="sc">/</span><span class="fu">mean</span>(takeawaysFor),<span class="at">giveawaysFor=</span>giveawaysFor<span class="sc">/</span><span class="fu">mean</span>(giveawaysFor),<span class="at">hitsFor=</span>hitsFor<span class="sc">/</span><span class="fu">mean</span>(hitsFor))</span>
+<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a><span class="co">#save cleaned data</span></span>
+<span id="cb26-41"><a href="#cb26-41" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(data, <span class="st">"../data/01-modified-data/team_regular_data_clean.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The power play team data and regular play team data had identical cleaning processes. They both started with importing team data for each of the four included seasons and checking for missing values. There were no missing values in these data sets.</p>
+<p>Next, I selected the relevant columns for each of the four data sets and renamed them, then filtered the data sets by either 5 on 5 play of 5 on 4 play. I had to add a label variable for whether or not each team made the playoffs in that season so I added an empty column to each data set and created a variable that included the names of the playoff teams in each season. I was then able to mutate the playoff variable to assign each team 0 (meaning they did not make the playoffs) or 1 (meaning the did make the playoffs).</p>
+<p>With the new playoff variable, the data sets for the four years were combined into one and non-numerical data was removed. After removing the non-numerical data, the numerical data was normalized.</p>
+<p>Following this, the data was prepped to be used in a Naive Bayes model so I exported each of the two data frames to CSV files.</p>
+</section>
+</section>
+<section id="team-power-play-data-with-point-brackets" class="level2">
+<h2 class="anchored" data-anchor-id="team-power-play-data-with-point-brackets">Team Power Play Data with Point Brackets</h2>
+<p>The next data set I cleaned and used was the power play data with the labels being point brackets instead of a binary playoff variable assignment.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load data</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>data2022 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../data/00-raw-data/team_data_2022.csv"</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co">#check for missing values</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(data2022))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#remove unnecessary columns and change column names</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>data2022 <span class="ot">&lt;-</span> <span class="fu">subset</span>(data2022, <span class="at">select=</span><span class="fu">c</span>(team,situation, xGoalsPercentage,corsiPercentage,shotAttemptsFor,xGoalsFor,faceOffsWonFor,takeawaysFor,giveawaysFor,hitsFor,team,situation))</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co">#filter non powerplay data</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>data2022<span class="ot">&lt;-</span> data2022 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(situation<span class="sc">==</span><span class="st">"5on4"</span>)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co">#add variable for points bracket</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>points_bracket <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"mid_tier"</span>,<span class="st">"over100"</span>,<span class="st">"under80"</span>,<span class="st">"under80"</span>,<span class="st">"mid_tier"</span>,<span class="st">"mid_tier"</span>,<span class="st">"over100"</span>,<span class="st">"mid_tier"</span>,<span class="st">"mid_tier"</span>,<span class="st">"over100"</span>,<span class="st">"mid_tier"</span>,<span class="st">"under80"</span>,<span class="st">"mid_tier"</span>,<span class="st">"mid_tier"</span>,<span class="st">"over100"</span>,<span class="st">"over100"</span>,<span class="st">"over100"</span>,<span class="st">"over100"</span>,<span class="st">"under80"</span>,<span class="st">"over100"</span>,<span class="st">"over100"</span>,<span class="st">"under80"</span>,<span class="st">"under80"</span>,<span class="st">"under80"</span>,<span class="st">"over100"</span>,<span class="st">"mid_tier"</span>,<span class="st">"mid_tier"</span>,<span class="st">"over100"</span>,<span class="st">"over100"</span>,<span class="st">"mid_tier"</span>,<span class="st">"mid_tier"</span>,<span class="st">"mid_tier"</span>)</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data2022 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">points_cat=</span>points_bracket)</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="co">#remove non-numerical data</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, <span class="at">select=</span><span class="sc">-</span><span class="fu">c</span>(team,situation,team<span class="fl">.1</span>,situation<span class="fl">.1</span>))</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a><span class="co">#normalize numerical data</span></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>data<span class="ot">&lt;-</span><span class="fu">mutate</span>(data, <span class="at">xGoalsPercentage=</span>xGoalsPercentage<span class="sc">/</span><span class="fu">mean</span>(xGoalsPercentage), <span class="at">corsiPercentage=</span>corsiPercentage<span class="sc">/</span><span class="fu">mean</span>(corsiPercentage), <span class="at">shotAttemptsFor=</span>shotAttemptsFor<span class="sc">/</span><span class="fu">mean</span>(shotAttemptsFor), <span class="at">xGoalsFor=</span>xGoalsFor<span class="sc">/</span><span class="fu">mean</span>(xGoalsFor), <span class="at">faceOffsWonFor=</span>faceOffsWonFor<span class="sc">/</span><span class="fu">mean</span>(faceOffsWonFor), <span class="at">takeawaysFor=</span>takeawaysFor<span class="sc">/</span><span class="fu">mean</span>(takeawaysFor),<span class="at">giveawaysFor=</span>giveawaysFor<span class="sc">/</span><span class="fu">mean</span>(giveawaysFor),<span class="at">hitsFor=</span>hitsFor<span class="sc">/</span><span class="fu">mean</span>(hitsFor))</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a><span class="co">#save cleaned data</span></span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(data, <span class="st">"../data/01-modified-data/team_pp_data_point_bracket_clean.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>I imported the 2022 team data file then checked for missing values. I then selected the relevant columns and filtered out the non-power play data. After that, I added a label variable called points bracket that assigned each team a range that they fell in of season standing points.</p>
+<p>To prep for clustering, I removed the non-numerical data and normalized the numerical data, then exported the cleaned data frame to a CSV file.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
