@@ -10,10 +10,7 @@ editor: visual
 
 ### Overview
 
-In this project, I use three different sets of data. These include data sets are the following:
-1. Team data by season
-2. Individual player data in 2022
-3. Team records data
+In this project, I use three different sets of data. These include data sets are the following: 1. Team data by season 2. Individual player data in 2022 3. Team records data
 
 ### Team Data by Season
 
@@ -32,4 +29,3 @@ Similar to the team data, there are 100 variables recorded which will have to be
 ### Team Record Data
 
 The team record data comes from hockey-reference.com. hockey-reference.com contains traditional data on the NHL going back to the 1917-1918 season. The data available in the website includes data for teams and players by career and season as well as record holder data in many categories. The dataset I downloaded includes many traditional hockey statistics including league standing points, power play percentage, and power play goals for each team during the 2022-2023 season. In this portfolio, these three variables will be used from this dataset so other information will have to be removed during the data cleaning process.
-

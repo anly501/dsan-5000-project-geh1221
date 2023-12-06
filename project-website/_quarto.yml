@@ -27,7 +27,7 @@ website:
         text: Clustering
       - href: decision-trees.html
         text: Decision Trees
-      - href: conclusions.html
+      - href: Conclusions.html
         text: Conclusions
 
 format:
